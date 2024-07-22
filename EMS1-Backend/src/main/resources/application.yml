@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: Subbu306
+    url: jdbc:mysql://localhost:3306/dj?maxAllowedPacket=3145728000
+    username: root
+    tomcat:
+      test-on-borrow: true
+      validation-query: SELECT 1 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 2000MB  
+      max-request-size: 2000MB  
+server:
+  port: 8080
