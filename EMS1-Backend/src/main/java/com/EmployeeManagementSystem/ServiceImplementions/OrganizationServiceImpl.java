@@ -45,7 +45,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		Optional<OrganizationEntity> optional = repo.findById(Id);
 		if(optional.isPresent()) {
 			repo.deleteById(Id);
-			return "deleted successfully";
+			return "deleted successfully.";
 		}
 		return "not deleted";
 	}

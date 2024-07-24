@@ -68,7 +68,7 @@ public class EmployeeServiceImplemention implements EmployeeService {
         if (subDepartment.isPresent()) {
             employee.setSubDepartment(subDepartment.get());
         } else {
-            return "Sub-department not found";
+            return "Sub-department not found.";
         }
 
         Optional<RoleEntity> role = roleRepository.findById(roleId);
