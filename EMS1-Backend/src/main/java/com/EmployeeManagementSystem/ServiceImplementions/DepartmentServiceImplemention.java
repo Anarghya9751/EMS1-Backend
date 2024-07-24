@@ -12,6 +12,7 @@ import com.EmployeeManagementSystem.Entity.OrganizationEntity;
 import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
 import com.EmployeeManagementSystem.Exception.BranchNotFoundException;
 import com.EmployeeManagementSystem.Exception.DepartmentNotFoundException;
+import com.EmployeeManagementSystem.Exception.DuplicateDataException;
 import com.EmployeeManagementSystem.Exception.OrganizationNotFoundException;
 import com.EmployeeManagementSystem.Repository.BranchRepository;
 import com.EmployeeManagementSystem.Repository.DepartmentRepository;
@@ -43,19 +44,12 @@ public class DepartmentServiceImplemention implements DepartmentService {
 	        departmentEntity.setOrganization(organization);
 	        departmentEntity.setBranch(branch);
 	        
+	        
 	        return departmentRepository.save(departmentEntity);
 	    }
-	   
-	    @Override
-	    public String deleteById(int departmentId) {
-	        if (!departmentRepository.existsById(departmentId)) {
-	            throw new DepartmentNotFoundException(departmentId);
-	        }
-	        departmentRepository.deleteById(departmentId);
-	        return "Department deleted successfully with ID: " + departmentId;
-	    }
 	    
-
+	    
+	  
 	    
 	    @Override
 	    public DepartmentDto getDepartmentDtoById(int departmentId) {
@@ -180,6 +174,18 @@ public class DepartmentServiceImplemention implements DepartmentService {
 	        subDepartmentDto.setSubDepartmentDescription(subDepartment.getSubDepartmentDescription());
 	        subDepartmentDto.setDepartmentId(subDepartment.getParentDepartment().getDepartmentId());
 	        return subDepartmentDto;
+	    }
+
+
+
+	    @Override
+	    public String deleteById(int departmentId) {
+	        if (!departmentRepository.existsById(departmentId)) {
+	            throw new DepartmentNotFoundException(departmentId);
+	        }
+
+	        departmentRepository.deleteById(departmentId);
+	        return "Department with ID " + departmentId + " has been successfully deleted.";
 	    }
 		
 }

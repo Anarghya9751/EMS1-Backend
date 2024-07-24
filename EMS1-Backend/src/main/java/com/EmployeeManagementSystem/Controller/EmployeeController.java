@@ -34,7 +34,7 @@ public class EmployeeController {
 	@Autowired
     private EmployeeService employeeService;
 
-	 @PostMapping("/save/{branchId}/{departmentId}/{subDepartmentId}")
+	 @PostMapping("/save/{branchId}/{departmentId}/{subDepartmentId}/{roleId}")
 	    public ResponseEntity<String> saveEmployee(
 	            @RequestParam("username") String username,
 	            @RequestParam("password") String password,
@@ -45,7 +45,9 @@ public class EmployeeController {
 	            @RequestParam("profileImages") MultipartFile profileImages,
 	            @PathVariable("branchId") Integer branchId,
 	            @PathVariable("departmentId") Integer departmentId,
-	            @PathVariable("subDepartmentId") Long subDepartmentId) {
+	            @PathVariable("subDepartmentId") Long subDepartmentId,
+	            @PathVariable("roleId") Long roleId)
+	 {
 
 	        EmployeeEntity employee = new EmployeeEntity();
 	        employee.setUsername(username);
@@ -59,7 +61,7 @@ public class EmployeeController {
 	            String filePath = saveFileToDisk(profileImages);
 	            employee.setProfileImagePath(filePath);
 
-	            String response = employeeService.saveEmployee(employee, branchId, departmentId, subDepartmentId, profileImages);
+	            String response = employeeService.saveEmployee(employee, branchId, departmentId, subDepartmentId, roleId, profileImages);
 	            return ResponseEntity.ok(response);
 	        } catch (IOException e) {
 	            return ResponseEntity.status(500).body("Failed to save employee: " + e.getMessage());

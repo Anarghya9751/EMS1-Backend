@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.EmployeeManagementSystem.dto.DepartmentDto;
 
 
 @RestController
+@CrossOrigin("*****")
 @RequestMapping("/api/departments")
 public class DepartmentController {
 
@@ -48,12 +50,12 @@ public class DepartmentController {
 	    }
 
 	    
-	    @GetMapping("/{departmentId}")
+	    @GetMapping("/GetDeptBYID/{departmentId}")
 	    public DepartmentDto getDepartmentDtoById(@PathVariable int departmentId) {
 	        return departmentService.getDepartmentDtoById(departmentId);
 	    }
 
-	    @GetMapping("/List")
+	    @GetMapping("/DeptList")
 	    public List<DepartmentDto> getAllDepartments() {
 	        return departmentService.getAllDepartments();
 	    }
@@ -81,7 +83,7 @@ public class DepartmentController {
 	        }
 	    }
 
-	    @GetMapping("/GetDept/{branchId}")
+	    @GetMapping("/GetDeptByBranchID/{branchId}")
 	    public List<DepartmentDto> getDepartmentsByBranchId(@PathVariable Integer branchId) {
 	        return departmentService.getDepartmentsByBranchId(branchId);
 	    }

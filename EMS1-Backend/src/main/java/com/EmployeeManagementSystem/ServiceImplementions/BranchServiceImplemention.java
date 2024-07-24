@@ -13,6 +13,7 @@ import com.EmployeeManagementSystem.Entity.OrganizationEntity;
 import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
 import com.EmployeeManagementSystem.Exception.BranchAlreadyExistsException;
 import com.EmployeeManagementSystem.Exception.BranchNotFoundException;
+import com.EmployeeManagementSystem.Exception.DuplicateDataException;
 import com.EmployeeManagementSystem.Exception.OrganizationNotFoundException;
 import com.EmployeeManagementSystem.Repository.BranchRepository;
 import com.EmployeeManagementSystem.Repository.OrganizationRepository;
@@ -31,19 +32,40 @@ public class BranchServiceImplemention implements BranchService {
 	    @Autowired
 	    private OrganizationRepository organizationRepository;
 	    
+//	    @Override
+//	    public String createBranch(Long organizationId, BranchEntity branchEntity) {
+//	        if (branchEntity.getBranchId() != null && branchRepository.existsById(branchEntity.getBranchId())) {
+//	            throw new BranchAlreadyExistsException(branchEntity.getBranchId());
+//	        }
+//	        OrganizationEntity organization = organizationRepository.findById(organizationId)
+//	                .orElseThrow(() -> new OrganizationNotFoundException(organizationId));
+//	        branchEntity.setOrganization(organization);
+//	        branchRepository.save(branchEntity);
+//	        return "Branch created successfully with ID: " + branchEntity.getBranchId() + " for Organization ID: " + organizationId;
+//	    }
+
+	    
 	    @Override
 	    public String createBranch(Long organizationId, BranchEntity branchEntity) {
 	        if (branchEntity.getBranchId() != null && branchRepository.existsById(branchEntity.getBranchId())) {
-	            throw new BranchAlreadyExistsException(branchEntity.getBranchId());
+	            throw new DuplicateDataException("Branch with ID " + branchEntity.getBranchId() + " already exists.");
 	        }
-	        OrganizationEntity organization = organizationRepository.findById(organizationId)
-	                .orElseThrow(() -> new OrganizationNotFoundException(organizationId));
-	        branchEntity.setOrganization(organization);
+
+	        Optional<BranchEntity> existingBranch = branchRepository.findByBranchNameAndBranchDescriptionAndBranchAddressAndBranchContactNumber(
+	                branchEntity.getBranchName(),
+	                branchEntity.getBranchDescription(),
+	                branchEntity.getBranchAddress(),
+	                branchEntity.getBranchContactNumber()
+	        );
+
+	        if (existingBranch.isPresent()) {
+	            throw new DuplicateDataException("Branch with the same Branchname, description, address, and contact number already exists.please Check Onces");
+	        }
+
 	        branchRepository.save(branchEntity);
 	        return "Branch created successfully with ID: " + branchEntity.getBranchId() + " for Organization ID: " + organizationId;
 	    }
-
-
+	
 
 	    @Override
 	    public String deleteBranch(Integer branchId) 
@@ -230,7 +252,7 @@ public class BranchServiceImplemention implements BranchService {
 		            List<Long> subDepartmentIds = department.getSubDepartments().stream()
 		                    .map(SubDepartmentEntity::getSubDepartmentId)
 		                    .collect(Collectors.toList());
-		            departmentDto.setSubDepartmentIds(subDepartmentIds); 
+		            departmentDto.setSubDepartmentId(subDepartmentIds);; 
 
 
 		            

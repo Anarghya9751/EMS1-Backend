@@ -31,7 +31,7 @@ public class SubDepartmentController {
 	@Autowired
 	private SubDepartmentService subDepartmentService;
 	
-	    @PostMapping("/{departmentId}")
+	    @PostMapping("/save/{departmentId}")
 	    public ResponseEntity<SubDepartmentEntity> createSubDepartment(@PathVariable int departmentId,
 	                                                                   @RequestParam String subDepartmentName,
 	                                                                   @RequestParam String subDepartmentDescription) {
@@ -45,7 +45,7 @@ public class SubDepartmentController {
 
 	   
 
-	    @DeleteMapping("/{subDepartmentId}")
+	    @DeleteMapping("/Delete/{subDepartmentId}")
 	    public ResponseEntity<String> deleteSubDepartment(@PathVariable Long subDepartmentId) {
 	        String result = subDepartmentService.deleteSubDepartment(subDepartmentId);
 	        return new ResponseEntity<>(result, HttpStatus.OK);
@@ -57,13 +57,13 @@ public class SubDepartmentController {
 	        return new ResponseEntity<>(subDepartments, HttpStatus.OK);
 	    }
 
-	    @GetMapping("/{subDepartmentId}")
+	    @GetMapping("GetSubDeptByID/{subDepartmentId}")
 	    public ResponseEntity<SubDepartmentDto> getSubDepartmentById(@PathVariable Long subDepartmentId) {
 	        SubDepartmentDto subDepartmentDto = subDepartmentService.getSubDepartmentDtoById(subDepartmentId);
 	        return new ResponseEntity<>(subDepartmentDto, HttpStatus.OK);
 	    }
 	    
-	    @PutMapping("/{subDepartmentId}")
+	    @PutMapping("update/{subDepartmentId}")
 	    public SubDepartmentEntity updateSubDepartment(
 	            @PathVariable Long subDepartmentId,
 	            @RequestParam String subDepartmentName,

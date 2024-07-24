@@ -13,11 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.EmployeeManagementSystem.Entity.BranchEntity;
 import com.EmployeeManagementSystem.Entity.DepartmentEntity;
 import com.EmployeeManagementSystem.Entity.EmployeeEntity;
+import com.EmployeeManagementSystem.Entity.RoleEntity;
 import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
 import com.EmployeeManagementSystem.Exception.EmployeeNotFoundException;
 import com.EmployeeManagementSystem.Repository.BranchRepository;
 import com.EmployeeManagementSystem.Repository.DepartmentRepository;
 import com.EmployeeManagementSystem.Repository.EmployeeRepository;
+import com.EmployeeManagementSystem.Repository.RoleRepository;
 import com.EmployeeManagementSystem.Repository.SubDepartmentRepository;
 import com.EmployeeManagementSystem.Service.EmployeeService;
 import com.EmployeeManagementSystem.dto.EmployeeDTO;
@@ -40,37 +42,62 @@ public class EmployeeServiceImplemention implements EmployeeService {
 	@Autowired
     private PasswordEncoder passwordEncoder;
 
-	public String saveEmployee(EmployeeEntity employee, Integer branchId, Integer departmentId, Long subDepartmentId,
-			MultipartFile profileImages) throws IOException {
-		if (profileImages != null && !profileImages.isEmpty()) {
-			employee.setProfileImages(profileImages.getBytes());
-		}
+	@Autowired
+    private RoleRepository roleRepository;
 
-		Optional<BranchEntity> branch = branchRepository.findById(branchId);
-		if (branch.isPresent()) {
-			employee.setBranch(branch.get());
-		} else {
-			return "Branch not found";
-		}
+    @Override
+    public String saveEmployee(EmployeeEntity employee, Integer branchId, Integer departmentId, Long subDepartmentId, Long roleId, MultipartFile profileImages) throws IOException {
+        if (profileImages != null && !profileImages.isEmpty()) {
+            employee.setProfileImages(profileImages.getBytes());
+        }
 
-		Optional<DepartmentEntity> department = departmentRepository.findById(departmentId);
-		if (department.isPresent()) {
-			employee.setDepartment(department.get());
-		} else {
-			return "Department not found";
-		}
+        Optional<BranchEntity> branch = branchRepository.findById(branchId);
+        if (branch.isPresent()) {
+            employee.setBranch(branch.get());
+        } else {
+            return "Branch not found";
+        }
 
-		Optional<SubDepartmentEntity> subDepartment = subDepartmentRepository.findById(subDepartmentId);
-		if (subDepartment.isPresent()) {
-			employee.setSubDepartment(subDepartment.get());
-		} else {
-			return "Sub-department not found";
-		}
-		employeeRepository.save(employee);
+        Optional<DepartmentEntity> department = departmentRepository.findById(departmentId);
+        if (department.isPresent()) {
+            employee.setDepartment(department.get());
+        } else {
+            return "Department not found";
+        }
+        Optional<SubDepartmentEntity> subDepartment = subDepartmentRepository.findById(subDepartmentId);
+        if (subDepartment.isPresent()) {
+            employee.setSubDepartment(subDepartment.get());
+        } else {
+            return "Sub-department not found";
+        }
 
-		return "Employee saved successfully";
-	}
+        Optional<RoleEntity> role = roleRepository.findById(roleId);
+        if (role.isPresent()) {
+            employee.setRoles(role.get());
+        } else {
+            return "Role not found";
+        }
 
+        if (employeeRepository.existsByUsername(employee.getUsername())) {
+            return "Username already exists";
+        }
+        if (employeeRepository.existsByEmailAddress(employee.getEmailAddress())) {
+            return "Email address already exists";
+        }
+        if (employeeRepository.existsByContactNumber(employee.getContactNumber())) {
+            return "Contact number already exists";
+        }
+        if (employeeRepository.existsByFirstName(employee.getFirstName())) {
+            return "Contact number already exists";
+        }
+        if (employeeRepository.existsByLastName(employee.getLastName())) {
+            return "Contact number already exists";
+        }
+        
+
+        employeeRepository.save(employee);
+        return "Employee saved successfully";
+    }
 	@Override
 	public EmployeeDTO findById(Long userId) {
 		EmployeeEntity employee = employeeRepository.findById(userId)

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.EmployeeManagementSystem.Entity.DepartmentEntity;
 import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
 import com.EmployeeManagementSystem.Exception.DepartmentNotFoundException;
+import com.EmployeeManagementSystem.Exception.DuplicateDataException;
 import com.EmployeeManagementSystem.Exception.SubDepartmentNotFoundException;
 import com.EmployeeManagementSystem.Repository.BranchRepository;
 import com.EmployeeManagementSystem.Repository.DepartmentRepository;
@@ -30,10 +31,35 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
 	    private BranchRepository branchRepository;
 
 
+//	    @Override
+//	    public SubDepartmentEntity saveSubDepartment(SubDepartmentDto subDepartmentDto, int departmentId) {
+//	        DepartmentEntity department = departmentRepository.findById(departmentId)
+//	                .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+//
+//	        SubDepartmentEntity subDepartment = new SubDepartmentEntity();
+//	        subDepartment.setSubDepartmentName(subDepartmentDto.getSubDepartmentName());
+//	        subDepartment.setSubDepartmentDescription(subDepartmentDto.getSubDepartmentDescription());
+//	        subDepartment.setParentDepartment(department);
+//
+//	        return subDepartmentRepository.save(subDepartment);
+//	    }
+	    
 	    @Override
 	    public SubDepartmentEntity saveSubDepartment(SubDepartmentDto subDepartmentDto, int departmentId) {
 	        DepartmentEntity department = departmentRepository.findById(departmentId)
 	                .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+
+	        if (subDepartmentRepository.existsBySubDepartmentNameAndParentDepartmentDepartmentId(
+	                subDepartmentDto.getSubDepartmentName(), departmentId)) {
+	            throw new DuplicateDataException("Sub-department with name '" + subDepartmentDto.getSubDepartmentName()
+	                    + "' already exists in Department ID: " + departmentId);
+	        }
+
+	        if (subDepartmentRepository.existsBySubDepartmentNameAndParentDepartmentDepartmentId(
+	                subDepartmentDto.getSubDepartmentDescription(), departmentId)) {
+	            throw new DuplicateDataException("Sub-department with description '" + subDepartmentDto.getSubDepartmentDescription()
+	                    + "' already exists in Department ID: " + departmentId);
+	        }
 
 	        SubDepartmentEntity subDepartment = new SubDepartmentEntity();
 	        subDepartment.setSubDepartmentName(subDepartmentDto.getSubDepartmentName());
@@ -103,7 +129,6 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
 	        subDepartmentDto.setSubDepartmentName(subDepartment.getSubDepartmentName());
 	        subDepartmentDto.setSubDepartmentDescription(subDepartment.getSubDepartmentDescription());
 
-	        // Setting department details
 	        DepartmentDto departmentDto = new DepartmentDto();
 	        DepartmentEntity parentDepartment = subDepartment.getParentDepartment();
 	        departmentDto.setDepartmentId(parentDepartment.getDepartmentId());

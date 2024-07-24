@@ -11,7 +11,7 @@ import com.EmployeeManagementSystem.dto.EmployeeDTO;
 
 public interface EmployeeService {
 
-    public String saveEmployee(EmployeeEntity employee, Integer branchId, Integer departmentId, Long subDepartmentId, MultipartFile profileImage) throws IOException ;
+    public String saveEmployee(EmployeeEntity employee, Integer branchId, Integer departmentId, Long subDepartmentId, Long roleId, MultipartFile profileImages) throws IOException ;
 
 
     EmployeeDTO findById(Long userId);

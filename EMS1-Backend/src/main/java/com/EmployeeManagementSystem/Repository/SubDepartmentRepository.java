@@ -9,4 +9,6 @@ import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
 @Repository
 public interface SubDepartmentRepository  extends JpaRepository<SubDepartmentEntity, Long> {
 
+	boolean existsBySubDepartmentNameAndParentDepartmentDepartmentId(String subDepartmentName, int departmentId);
+
 }

@@ -52,7 +52,7 @@ public class BranchController {
    
 
 
-	@GetMapping("/{branchId}")
+	@GetMapping("/GetBranchByID/{branchId}")
 	public ResponseEntity<BranchForm> getBranchById(@PathVariable Integer branchId) {
 		BranchForm branch = branchService.getBranchById(branchId);
 		if (branch != null) {

@@ -9,8 +9,9 @@ import com.EmployeeManagementSystem.dto.DepartmentDto;
 
 
 public interface DepartmentService {
+    public DepartmentEntity saveDepartment(DepartmentEntity departmentEntity, Long organizationId, Integer branchId) ;
 
-    public DepartmentEntity saveDepartment(DepartmentEntity departmentEntity, Long organizationId, Integer branchId);
+
 
     public String deleteById(int departmentId) ;
 

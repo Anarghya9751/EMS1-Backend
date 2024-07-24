@@ -1,5 +1,7 @@
 package com.EmployeeManagementSystem.Entity;
 
+import javax.management.relation.Role;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -77,8 +79,25 @@ public class EmployeeEntity {
     @JoinColumn(name = "sub_department_id", nullable = false)
     private SubDepartmentEntity subDepartment;
 
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "role_id", nullable = false)
+    private RoleEntity roles;
 
-    public BranchEntity getBranch() {
+    
+
+
+    
+
+	public RoleEntity getRoles() {
+		return roles;
+	}
+
+	public void setRoles(RoleEntity roles) {
+		this.roles = roles;
+	}
+
+	public BranchEntity getBranch() {
 		return branch;
 	}
 

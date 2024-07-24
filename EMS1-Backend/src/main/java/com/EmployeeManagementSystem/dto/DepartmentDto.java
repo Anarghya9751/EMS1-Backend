@@ -15,15 +15,19 @@ public class DepartmentDto {
     
     private List<SubDepartmentDto> subDepartments; 
     
-    private List<Long> subDepartmentIds; 
+    private List<Long> subDepartmentId; 
 
 
 	
-	public List<Long> getSubDepartmentIds() {
-		return subDepartmentIds;
+	
+	
+	
+	
+	public List<Long> getSubDepartmentId() {
+		return subDepartmentId;
 	}
-	public void setSubDepartmentIds(List<Long> subDepartmentIds) {
-		this.subDepartmentIds = subDepartmentIds;
+	public void setSubDepartmentId(List<Long> subDepartmentId) {
+		this.subDepartmentId = subDepartmentId;
 	}
 	public List<SubDepartmentDto> getSubDepartments() {
 		return subDepartments;

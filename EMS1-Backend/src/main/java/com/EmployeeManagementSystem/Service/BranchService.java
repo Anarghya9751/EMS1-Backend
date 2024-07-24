@@ -10,7 +10,7 @@ import com.EmployeeManagementSystem.dto.BranchForm;
 public interface BranchService
 {
 	
-        public String createBranch(Long organizationId, BranchEntity branchEntity) ;
+    public String createBranch(Long organizationId, BranchEntity branchEntity) ;
 
         String deleteBranch(Integer branchId);
 
