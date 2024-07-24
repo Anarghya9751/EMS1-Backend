@@ -139,7 +139,7 @@ public class EmployeeServiceImplemention implements EmployeeService {
 	@Override
 	public void changePassword(Long userId, String password) {
 		EmployeeEntity employee = employeeRepository.findById(userId)
-				.orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + userId));
+				.orElseThrow(() -> new EmployeeNotFoundException("Employee not found with. id: " + userId));
 
 		String encodedPassword = passwordEncoder.encode(password);
 		employee.setPassword(encodedPassword);
