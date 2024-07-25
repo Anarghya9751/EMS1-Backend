@@ -185,7 +185,7 @@ public class DepartmentServiceImplemention implements DepartmentService {
 	        }
 
 	        departmentRepository.deleteById(departmentId);
-	        return "Department with ID " + departmentId + " has been successfully deleted.";
+	        return "Department with ID " + departmentId + " has been successfully deleted!";
 	    }
 		
 }
