@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.ServiceImplementions;
+package com.Ems.ServiceImplementions;
 
 import java.util.Optional;
 
@@ -9,10 +9,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.EmployeeManagementSystem.Entity.Entitylogin;
-import com.EmployeeManagementSystem.Repository.Reprologin;
-import com.EmployeeManagementSystem.Service.Servicelogin;
-import com.EmployeeManagementSystem.dto.EntityloginDTO;
+import com.Ems.Entity.Entitylogin;
+import com.Ems.Repository.Reprologin;
+import com.Ems.Service.Servicelogin;
+import com.Ems.dto.EntityloginDTO;
 
 import jakarta.mail.MessagingException;
 

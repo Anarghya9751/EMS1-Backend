@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Controller;
+package com.Ems.Controller;
 
 import java.util.List;
 
@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.EmployeeManagementSystem.Entity.DepartmentEntity;
-import com.EmployeeManagementSystem.Service.DepartmentService;
-import com.EmployeeManagementSystem.dto.DepartmentDto;
+import com.Ems.Entity.DepartmentEntity;
+import com.Ems.Exception.DepartmentNotFoundException;
+import com.Ems.Service.DepartmentService;
+import com.Ems.dto.DepartmentDto;
 
 
 
@@ -50,16 +51,7 @@ public class DepartmentController {
 	    }
 
 	    
-	    @GetMapping("/GetDeptBYID/{departmentId}")
-	    public DepartmentDto getDepartmentDtoById(@PathVariable int departmentId) {
-	        return departmentService.getDepartmentDtoById(departmentId);
-	    }
-
-	    @GetMapping("/DeptList")
-	    public List<DepartmentDto> getAllDepartments() {
-	        return departmentService.getAllDepartments();
-	    }
-	    
+	   
 	    
 	   
 	    
@@ -68,12 +60,7 @@ public class DepartmentController {
 	            @PathVariable Long organizationId,
 	            @PathVariable Integer branchId,
 	            @PathVariable Integer departmentId,
-	            @RequestParam String departmentName,
-	            @RequestParam String departmentDescription) {
-
-	        DepartmentDto departmentDto = new DepartmentDto();
-	        departmentDto.setDepartmentname(departmentName);
-	        departmentDto.setDepartmentDescription(departmentDescription);
+	            @RequestBody DepartmentDto departmentDto) {
 
 	        try {
 	            DepartmentEntity updatedDepartment = departmentService.updateDepartment(organizationId, branchId, departmentId, departmentDto);
@@ -82,10 +69,34 @@ public class DepartmentController {
 	            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	        }
 	    }
-
-	    @GetMapping("/GetDeptByBranchID/{branchId}")
-	    public List<DepartmentDto> getDepartmentsByBranchId(@PathVariable Integer branchId) {
-	        return departmentService.getDepartmentsByBranchId(branchId);
+	    
+	    
+	    @GetMapping("GetDeptBYID1/{departmentId}")
+	    public ResponseEntity<DepartmentEntity> getDepartmentById1(@PathVariable Integer departmentId) {
+	        try {
+	            DepartmentEntity departmentEntity = departmentService.getDepartmentById1(departmentId);
+	            return ResponseEntity.ok(departmentEntity);
+	        } catch (DepartmentNotFoundException e) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
 	    }
+
+//	    @GetMapping("/DeptList")
+//	    public ResponseEntity<List<DepartmentEntity>> getAllDepartments() {
+//	        List<DepartmentEntity> departmentEntities = departmentService.getAllDepartments();
+//	        return ResponseEntity.ok(departmentEntities);
+//	    }
+	    
+	    @GetMapping("GetDeptBYID/{departmentId}")
+		public DepartmentDto getDepartmentById(@PathVariable int departmentId){
+			
+			return departmentService.getDepartmentById(departmentId);
+		}
+
+	    @GetMapping("/DeptList")
+		public List<DepartmentDto> getAllDepartments(){
+			return departmentService.getAllDepartments();
+			
+		}
 	    
 }

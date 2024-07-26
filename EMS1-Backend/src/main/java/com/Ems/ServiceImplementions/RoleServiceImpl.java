@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.ServiceImplementions;
+package com.Ems.ServiceImplementions;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,17 +7,17 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.EmployeeManagementSystem.Entity.DepartmentEntity;
-import com.EmployeeManagementSystem.Entity.RoleEntity;
-import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
-import com.EmployeeManagementSystem.Exception.DepartmentNotFoundException;
-import com.EmployeeManagementSystem.Exception.RoleNotFoundException;
-import com.EmployeeManagementSystem.Exception.SubDepartmentNotFoundException;
-import com.EmployeeManagementSystem.Repository.DepartmentRepository;
-import com.EmployeeManagementSystem.Repository.RoleRepository;
-import com.EmployeeManagementSystem.Repository.SubDepartmentRepository;
-import com.EmployeeManagementSystem.Service.RoleService;
-import com.EmployeeManagementSystem.dto.RoleDto;
+import com.Ems.Entity.DepartmentEntity;
+import com.Ems.Entity.RoleEntity;
+import com.Ems.Entity.SubDepartmentEntity;
+import com.Ems.Exception.DepartmentNotFoundException;
+import com.Ems.Exception.RoleNotFoundException;
+import com.Ems.Exception.SubDepartmentNotFoundException;
+import com.Ems.Repository.DepartmentRepository;
+import com.Ems.Repository.RoleRepository;
+import com.Ems.Repository.SubDepartmentRepository;
+import com.Ems.Service.RoleService;
+import com.Ems.dto.RoleDto;
 
 
  

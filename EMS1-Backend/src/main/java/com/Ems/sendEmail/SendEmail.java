@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.sendEmail;
+package com.Ems.sendEmail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

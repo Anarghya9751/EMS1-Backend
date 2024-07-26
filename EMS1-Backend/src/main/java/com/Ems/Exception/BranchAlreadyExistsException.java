@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Exception;
+package com.Ems.Exception;
 
 public class BranchAlreadyExistsException extends RuntimeException {
     public BranchAlreadyExistsException(Integer branchId) {

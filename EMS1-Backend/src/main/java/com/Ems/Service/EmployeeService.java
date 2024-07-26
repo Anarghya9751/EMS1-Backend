@@ -1,12 +1,12 @@
-package com.EmployeeManagementSystem.Service;
+package com.Ems.Service;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.EmployeeManagementSystem.Entity.EmployeeEntity;
-import com.EmployeeManagementSystem.dto.EmployeeDTO;
+import com.Ems.Entity.EmployeeEntity;
+import com.Ems.dto.EmployeeDTO;
 
 
 public interface EmployeeService {

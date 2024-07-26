@@ -1,9 +1,9 @@
-package com.EmployeeManagementSystem.Service;
+package com.Ems.Service;
 
 import java.util.List;
 
-import com.EmployeeManagementSystem.Entity.RoleEntity;
-import com.EmployeeManagementSystem.dto.RoleDto;
+import com.Ems.Entity.RoleEntity;
+import com.Ems.dto.RoleDto;
 
 
 

@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Repository;
+package com.Ems.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
-import com.EmployeeManagementSystem.Entity.BranchEntity;
-import com.EmployeeManagementSystem.Entity.DepartmentEntity;
+import com.Ems.Entity.BranchEntity;
+import com.Ems.Entity.DepartmentEntity;
 
 
 

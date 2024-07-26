@@ -1,9 +1,9 @@
-package com.EmployeeManagementSystem.Service;
+package com.Ems.Service;
 
 import java.util.List;
 
-import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
-import com.EmployeeManagementSystem.dto.SubDepartmentDto;
+import com.Ems.Entity.SubDepartmentEntity;
+import com.Ems.dto.SubDepartmentDto;
 
 
 
@@ -14,10 +14,11 @@ public interface SubDepartmentService {
 
     String deleteSubDepartment(Long subDepartmentId);
 
-    List<SubDepartmentDto> getAllSubDepartments();
 
-    SubDepartmentDto getSubDepartmentDtoById(Long subDepartmentId);
-    
+    public List<SubDepartmentEntity> getAllSubDepartments() ;
+	public SubDepartmentEntity getSubDepartmentById(Long subDepartmentId) ;
+
+
     public SubDepartmentEntity updateSubDepartment(Long subDepartmentId, SubDepartmentEntity subDepartmentEntity);
 
 }

@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.dto;
+package com.Ems.dto;
 
 import java.util.List;
 
@@ -17,16 +17,9 @@ public class BranchForm {
 	
 	private int branchId;
    
-    private List<DepartmentDto> departments; 
+    
 
-
-	public List<DepartmentDto> getDepartments() {
-		return departments;
-	}
-
-	public void setDepartments(List<DepartmentDto> departments) {
-		this.departments = departments;
-	}
+	
 
 	public int getBranchId() {
 		return branchId;

@@ -1,9 +1,9 @@
-package com.EmployeeManagementSystem.Service;
+package com.Ems.Service;
 
 import java.util.List;
 
-import com.EmployeeManagementSystem.Entity.DepartmentEntity;
-import com.EmployeeManagementSystem.dto.DepartmentDto;
+import com.Ems.Entity.DepartmentEntity;
+import com.Ems.dto.DepartmentDto;
 
 
 
@@ -16,14 +16,16 @@ public interface DepartmentService {
     public String deleteById(int departmentId) ;
 
 
-    public DepartmentDto getDepartmentDtoById(int departmentId) ;
     
-	public List<DepartmentDto> getAllDepartments() ;
-
+	
 
     public DepartmentEntity updateDepartment(Long organizationId, Integer branchId, Integer departmentId, DepartmentDto departmentDto);
 
+	public DepartmentDto getDepartmentById(int departmentId) ;
     
-    public List<DepartmentDto> getDepartmentsByBranchId(Integer branchId) ;
+    public List<DepartmentDto> getAllDepartments();
+    
+	public DepartmentEntity getDepartmentById1(Integer departmentId) ;
+
 
 }

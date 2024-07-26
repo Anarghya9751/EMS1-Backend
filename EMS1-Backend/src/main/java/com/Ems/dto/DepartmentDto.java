@@ -1,7 +1,9 @@
-package com.EmployeeManagementSystem.dto;
+package com.Ems.dto;
 
 import java.util.List;
 import java.util.Set;
+
+import com.Ems.Entity.SubDepartmentEntity;
 
 
 public class DepartmentDto {
@@ -12,28 +14,24 @@ public class DepartmentDto {
 
     private Long organizationId;
     private int branchId;
-    
-    private List<SubDepartmentDto> subDepartments; 
-    
-    private List<Long> subDepartmentId; 
+
+	private Set<SubDepartmentEntity> subdepartments;
 
 
+
 	
 	
 	
 	
 	
-	public List<Long> getSubDepartmentId() {
-		return subDepartmentId;
+	
+	
+	
+	public Set<SubDepartmentEntity> getSubdepartments() {
+		return subdepartments;
 	}
-	public void setSubDepartmentId(List<Long> subDepartmentId) {
-		this.subDepartmentId = subDepartmentId;
-	}
-	public List<SubDepartmentDto> getSubDepartments() {
-		return subDepartments;
-	}
-	public void setSubDepartments(List<SubDepartmentDto> subDepartments) {
-		this.subDepartments = subDepartments;
+	public void setSubdepartments(Set<SubDepartmentEntity> subdepartments) {
+		this.subdepartments = subdepartments;
 	}
 	public int getDepartmentId() {
 		return departmentId;

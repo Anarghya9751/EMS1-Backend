@@ -1,4 +1,4 @@
- package com.EmployeeManagementSystem.Controller;
+ package com.Ems.Controller;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.EmployeeManagementSystem.Entity.BranchEntity;
-import com.EmployeeManagementSystem.Service.BranchService;
-import com.EmployeeManagementSystem.dto.BranchForm;
+import com.Ems.Entity.BranchEntity;
+import com.Ems.Service.BranchService;
+import com.Ems.dto.BranchForm;
 
 import jakarta.validation.Valid;
 
@@ -52,44 +52,30 @@ public class BranchController {
    
 
 
-	@GetMapping("/GetBranchByID/{branchId}")
-	public ResponseEntity<BranchForm> getBranchById(@PathVariable Integer branchId) {
-		BranchForm branch = branchService.getBranchById(branchId);
-		if (branch != null) {
-			return ResponseEntity.ok(branch);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
+
   
-	@GetMapping("/ViewtheList")
-	public ResponseEntity<List<BranchForm>> getAllBranches() {
-		List<BranchForm> branches = branchService.getAllBranches();
-		return ResponseEntity.ok(branches);
-	}
 	
-	@PutMapping("/update/{organizationId}/{branchId}")
-    public ResponseEntity<BranchEntity> updateBranch(
-            @PathVariable Long organizationId,
-            @PathVariable Integer branchId,
-            @RequestParam String branchName,
-            @RequestParam String branchDescription,
-            @RequestParam String branchAddress,
-            @RequestParam String branchContactNumber) {
+	 @PutMapping("/update/{organizationId}/{branchId}")
+	    public ResponseEntity<BranchEntity> updateBranch(
+	            @PathVariable Long organizationId,
+	            @PathVariable Integer branchId,
+	            @RequestBody BranchForm branchForm) {
 
-        BranchForm branchDto = new BranchForm();
-        branchDto.setBranchName(branchName);
-        branchDto.setBranchDescription(branchDescription);
-        branchDto.setBranchAddress(branchAddress);
-        branchDto.setBranchContactNumber(branchContactNumber);
-
-        BranchEntity updatedBranch = branchService.updateBranch(organizationId, branchId, branchDto);
-        return new ResponseEntity<>(updatedBranch, HttpStatus.OK);
-    }
-
-	 @GetMapping("/GetBranch/{organizationId}")
-	    public List<BranchForm> getBranchesByOrganizationId(@PathVariable Long organizationId) {
-	        return branchService.getBranchesByOrganizationId(organizationId);
+	        BranchEntity updatedBranch = branchService.updateBranch(organizationId, branchId, branchForm);
+	        return new ResponseEntity<>(updatedBranch, HttpStatus.OK);
 	    }
+	
 
+	 
+
+	 @GetMapping("/BranchDept/{branchId}")
+	    public ResponseEntity<BranchEntity> getBranchWithDepartments(@PathVariable Integer branchId) {
+	        BranchEntity branch = branchService.getBranchWithDepartments(branchId);
+	        return ResponseEntity.ok(branch);
+	    }
+	 @GetMapping("/ViewtheList")
+	    public ResponseEntity<List<BranchEntity>> getAllBranches() {
+	        List<BranchEntity> branches = branchService.getAllBranches();
+	        return ResponseEntity.ok(branches);
+	    }
 }

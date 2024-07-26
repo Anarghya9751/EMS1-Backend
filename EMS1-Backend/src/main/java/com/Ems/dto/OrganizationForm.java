@@ -1,8 +1,8 @@
-package com.EmployeeManagementSystem.dto;
+package com.Ems.dto;
 
 import java.util.Set;
 
-import com.EmployeeManagementSystem.Entity.BranchEntity;
+import com.Ems.Entity.BranchEntity;
 
 
 public class OrganizationForm {

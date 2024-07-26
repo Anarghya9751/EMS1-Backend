@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Security;
+package com.Ems.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

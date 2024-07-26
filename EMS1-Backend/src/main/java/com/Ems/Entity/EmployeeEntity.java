@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Entity;
+package com.Ems.Entity;
 
 import javax.management.relation.Role;
 

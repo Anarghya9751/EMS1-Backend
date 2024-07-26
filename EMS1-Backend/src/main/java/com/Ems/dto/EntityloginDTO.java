@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.dto;
+package com.Ems.dto;
 
 public class EntityloginDTO {
 

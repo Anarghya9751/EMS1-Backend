@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Exception;
+package com.Ems.Exception;
 
 public class BranchNotFoundException extends RuntimeException {
     public BranchNotFoundException(Integer branchId) {

@@ -1,11 +1,11 @@
-package com.EmployeeManagementSystem.Repository;
+package com.Ems.Repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.EmployeeManagementSystem.Entity.Entitylogin;
+import com.Ems.Entity.Entitylogin;
 
 
 @Repository

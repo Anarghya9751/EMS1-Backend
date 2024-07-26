@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.ServiceImplementions;
+package com.Ems.ServiceImplementions;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,19 +10,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.EmployeeManagementSystem.Entity.BranchEntity;
-import com.EmployeeManagementSystem.Entity.DepartmentEntity;
-import com.EmployeeManagementSystem.Entity.EmployeeEntity;
-import com.EmployeeManagementSystem.Entity.RoleEntity;
-import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
-import com.EmployeeManagementSystem.Exception.EmployeeNotFoundException;
-import com.EmployeeManagementSystem.Repository.BranchRepository;
-import com.EmployeeManagementSystem.Repository.DepartmentRepository;
-import com.EmployeeManagementSystem.Repository.EmployeeRepository;
-import com.EmployeeManagementSystem.Repository.RoleRepository;
-import com.EmployeeManagementSystem.Repository.SubDepartmentRepository;
-import com.EmployeeManagementSystem.Service.EmployeeService;
-import com.EmployeeManagementSystem.dto.EmployeeDTO;
+import com.Ems.Entity.BranchEntity;
+import com.Ems.Entity.DepartmentEntity;
+import com.Ems.Entity.EmployeeEntity;
+import com.Ems.Entity.RoleEntity;
+import com.Ems.Entity.SubDepartmentEntity;
+import com.Ems.Exception.EmployeeNotFoundException;
+import com.Ems.Repository.BranchRepository;
+import com.Ems.Repository.DepartmentRepository;
+import com.Ems.Repository.EmployeeRepository;
+import com.Ems.Repository.RoleRepository;
+import com.Ems.Repository.SubDepartmentRepository;
+import com.Ems.Service.EmployeeService;
+import com.Ems.dto.EmployeeDTO;
 
 @Service
 public class EmployeeServiceImplemention implements EmployeeService {
@@ -183,7 +183,7 @@ public class EmployeeServiceImplemention implements EmployeeService {
 		EmployeeDTO dto = new EmployeeDTO();
 		dto.setUserId(employee.getUserId());
 		dto.setUsername(employee.getUsername());
-		dto.setPassword(employee.getPassword()); // Consider not including password in DTO
+		dto.setPassword(employee.getPassword()); 
 		dto.setFirstName(employee.getFirstName());
 		dto.setLastName(employee.getLastName());
 		dto.setEmailAddress(employee.getEmailAddress());
@@ -193,27 +193,11 @@ public class EmployeeServiceImplemention implements EmployeeService {
 		dto.setDepartmentId(employee.getDepartment() != null ? employee.getDepartment().getDepartmentId() : 0);
 		dto.setSubDepartmentId(
 				employee.getSubDepartment() != null ? employee.getSubDepartment().getSubDepartmentId() : 0);
-		dto.setProfileImagePath(employee.getProfileImagePath()); // Ensure this is set properly
+		dto.setProfileImagePath(employee.getProfileImagePath()); 
 		return dto;
 	}
 
-//        private EmployeeDTO convertToDTO(EmployeeEntity employee) {
-//            EmployeeDTO dto = new EmployeeDTO();
-//            dto.setUserId(employee.getUserId());
-//            dto.setUsername(employee.getUsername());
-//            dto.setPassword(employee.getPassword());
-//            dto.setFirstName(employee.getFirstName());
-//            dto.setLastName(employee.getLastName());
-//            dto.setEmailAddress(employee.getEmailAddress());
-//            dto.setContactNumber(employee.getContactNumber());
-//            dto.setProfileImagePath(employee.getProfileImagePath());
-//            dto.setProfileImages(employee.getProfileImages());
-//            dto.setBranchId(employee.getBranch().getBranchId());
-//            dto.setDepartmentId(employee.getDepartment().getDepartmentId());
-//            dto.setSubDepartmentId(employee.getSubDepartment().getSubDepartmentId());
-//
-//
-//    
+
 
 	@Override
 	public String deleteEmployee(Long employeeId) {
@@ -225,4 +209,6 @@ public class EmployeeServiceImplemention implements EmployeeService {
 		}
 	}
 
+	
+	
 }

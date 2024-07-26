@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Controller;
+package com.Ems.Controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.EmployeeManagementSystem.Entity.EmployeeEntity;
-import com.EmployeeManagementSystem.Exception.EmployeeNotFoundException;
-import com.EmployeeManagementSystem.Service.EmployeeService;
-import com.EmployeeManagementSystem.dto.EmployeeDTO;
+import com.Ems.Entity.EmployeeEntity;
+import com.Ems.Exception.EmployeeNotFoundException;
+import com.Ems.Service.EmployeeService;
+import com.Ems.dto.EmployeeDTO;
 
 @RestController
 @CrossOrigin("***")
@@ -131,7 +131,8 @@ public class EmployeeController {
 	    }
 
 
-
+	   
+ 
 	    @PutMapping("/profile/update-ProfileImage/{userId}")
 	    public ResponseEntity<String> updateProfileImage(
 	            @PathVariable Long userId,

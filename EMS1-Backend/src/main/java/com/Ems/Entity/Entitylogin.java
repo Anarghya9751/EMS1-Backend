@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Entity;
+package com.Ems.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

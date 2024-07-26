@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Controller;
+package com.Ems.Controller;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.EmployeeManagementSystem.Entity.BranchEntity;
-import com.EmployeeManagementSystem.Entity.DepartmentEntity;
-import com.EmployeeManagementSystem.Entity.SubDepartmentEntity;
-import com.EmployeeManagementSystem.Service.SubDepartmentService;
-import com.EmployeeManagementSystem.dto.SubDepartmentDto;
+import com.Ems.Entity.BranchEntity;
+import com.Ems.Entity.DepartmentEntity;
+import com.Ems.Entity.SubDepartmentEntity;
+import com.Ems.Service.SubDepartmentService;
+import com.Ems.dto.SubDepartmentDto;
 
 
 
@@ -51,34 +51,43 @@ public class SubDepartmentController {
 	        return new ResponseEntity<>(result, HttpStatus.OK);
 	    }
 
-	    @GetMapping("/GetSubDepartmentList")
-	    public ResponseEntity<List<SubDepartmentDto>> getAllSubDepartments() {
-	        List<SubDepartmentDto> subDepartments = subDepartmentService.getAllSubDepartments();
-	        return new ResponseEntity<>(subDepartments, HttpStatus.OK);
-	    }
 
-	    @GetMapping("GetSubDeptByID/{subDepartmentId}")
-	    public ResponseEntity<SubDepartmentDto> getSubDepartmentById(@PathVariable Long subDepartmentId) {
-	        SubDepartmentDto subDepartmentDto = subDepartmentService.getSubDepartmentDtoById(subDepartmentId);
-	        return new ResponseEntity<>(subDepartmentDto, HttpStatus.OK);
-	    }
 	    
 	    @PutMapping("update/{subDepartmentId}")
 	    public SubDepartmentEntity updateSubDepartment(
 	            @PathVariable Long subDepartmentId,
-	            @RequestParam String subDepartmentName,
-	            @RequestParam String subDepartmentDescription
-	            ) {
+	            @RequestBody SubDepartmentDto subDepartmentDto) {
 
 	        SubDepartmentEntity subDepartmentEntity = new SubDepartmentEntity();
-	        subDepartmentEntity.setSubDepartmentName(subDepartmentName);
-	        subDepartmentEntity.setSubDepartmentDescription(subDepartmentDescription);
-
-	        DepartmentEntity department = new DepartmentEntity();
-
-	        BranchEntity branch = new BranchEntity();
+	        subDepartmentEntity.setSubDepartmentName(subDepartmentDto.getSubDepartmentName());
+	        subDepartmentEntity.setSubDepartmentDescription(subDepartmentDto.getSubDepartmentDescription());
 
 	        return subDepartmentService.updateSubDepartment(subDepartmentId, subDepartmentEntity);
+	    }
+	    
+//	    @GetMapping("/GetSubDepartmentList")
+//	    public ResponseEntity<List<SubDepartmentDto>> getAllSubDepartments() {
+//	        List<SubDepartmentDto> subDepartments = subDepartmentService.getAllSubDepartments();
+//	        return new ResponseEntity<>(subDepartments, HttpStatus.OK);
+//	    }
+//
+//	    @GetMapping("/SubDepartment/{subDepartmentId}")
+//	    public ResponseEntity<SubDepartmentDto> getSubDepartmentById(@PathVariable Long subDepartmentId) {
+//	        SubDepartmentDto subDepartmentDto = subDepartmentService.getSubDepartmentDtoById(subDepartmentId);
+//	        return new ResponseEntity<>(subDepartmentDto, HttpStatus.OK);
+//	    }
+//	
+	    
+	    @GetMapping("/GetSubDepartmentList")
+	    public ResponseEntity<List<SubDepartmentEntity>> getAllSubDepartments() {
+	        List<SubDepartmentEntity> subDepartments = subDepartmentService.getAllSubDepartments();
+	        return ResponseEntity.ok(subDepartments);
+	    }
+
+	    @GetMapping("/SubDepartment/{subDepartmentId}")
+	    public ResponseEntity<SubDepartmentEntity> getSubDepartmentById(@PathVariable Long subDepartmentId) {
+	        SubDepartmentEntity subDepartment = subDepartmentService.getSubDepartmentById(subDepartmentId);
+	        return ResponseEntity.ok(subDepartment);
 	    }
 
 }

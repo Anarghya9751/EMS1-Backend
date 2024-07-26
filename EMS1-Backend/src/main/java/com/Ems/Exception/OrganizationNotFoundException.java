@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Exception;
+package com.Ems.Exception;
 public class OrganizationNotFoundException extends RuntimeException {
 	    public OrganizationNotFoundException(Long organizationId) {
 	        super("Organization with ID " + organizationId + " not found.");

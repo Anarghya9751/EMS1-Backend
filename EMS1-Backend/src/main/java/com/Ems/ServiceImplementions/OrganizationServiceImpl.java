@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.ServiceImplementions;
+package com.Ems.ServiceImplementions;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,11 +7,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.EmployeeManagementSystem.Entity.OrganizationEntity;
-import com.EmployeeManagementSystem.Exception.OrganizationNotFoundException;
-import com.EmployeeManagementSystem.Repository.OrganizationRepository;
-import com.EmployeeManagementSystem.Service.OrganizationService;
-import com.EmployeeManagementSystem.dto.OrganizationForm;
+import com.Ems.Entity.OrganizationEntity;
+import com.Ems.Exception.OrganizationNotFoundException;
+import com.Ems.Repository.OrganizationRepository;
+import com.Ems.Service.OrganizationService;
+import com.Ems.dto.OrganizationForm;
 
 
 

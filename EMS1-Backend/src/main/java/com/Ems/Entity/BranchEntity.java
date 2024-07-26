@@ -1,13 +1,15 @@
-package com.EmployeeManagementSystem.Entity;
+package com.Ems.Entity;
 
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -54,12 +56,13 @@ public class BranchEntity {
     private OrganizationEntity organization;
     
     
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
-    @JsonBackReference
+
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<DepartmentEntity> departments;
+
     
    
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
     private Set<EmployeeEntity> employees;
     

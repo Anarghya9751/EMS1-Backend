@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Exception;
+package com.Ems.Exception;
 
 public class EmployeeException extends RuntimeException {
     public EmployeeException(String message) {

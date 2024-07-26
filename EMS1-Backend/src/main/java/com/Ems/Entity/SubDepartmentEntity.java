@@ -1,12 +1,14 @@
-package com.EmployeeManagementSystem.Entity;
+package com.Ems.Entity;
 
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,8 +36,8 @@ public class SubDepartmentEntity {
     private DepartmentEntity parentDepartment;
     
     
-    @OneToMany(mappedBy = "subDepartment", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @OneToMany(mappedBy = "subDepartment", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<EmployeeEntity> employees;
     
 

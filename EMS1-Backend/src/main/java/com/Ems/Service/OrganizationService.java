@@ -1,9 +1,9 @@
-package com.EmployeeManagementSystem.Service;
+package com.Ems.Service;
 
 import java.util.List;
 
-import com.EmployeeManagementSystem.Entity.OrganizationEntity;
-import com.EmployeeManagementSystem.dto.OrganizationForm;
+import com.Ems.Entity.OrganizationEntity;
+import com.Ems.dto.OrganizationForm;
 
 
 

@@ -1,9 +1,10 @@
-package com.EmployeeManagementSystem.Service;
+package com.Ems.Service;
 
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
-import com.EmployeeManagementSystem.Entity.Entitylogin;
-import com.EmployeeManagementSystem.dto.EntityloginDTO;
+
+import com.Ems.Entity.Entitylogin;
+import com.Ems.dto.EntityloginDTO;
 
 import jakarta.mail.MessagingException;
 

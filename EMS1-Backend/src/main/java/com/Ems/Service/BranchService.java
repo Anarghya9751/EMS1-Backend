@@ -1,9 +1,9 @@
-package com.EmployeeManagementSystem.Service;
+package com.Ems.Service;
 
 import java.util.List;
 
-import com.EmployeeManagementSystem.Entity.BranchEntity;
-import com.EmployeeManagementSystem.dto.BranchForm;
+import com.Ems.Entity.BranchEntity;
+import com.Ems.dto.BranchForm;
 
 
 
@@ -17,12 +17,11 @@ public interface BranchService
 	    
 	    public BranchEntity updateBranch(Long organizationId, Integer branchId, BranchForm branchDto) ;
 
+	    public List<BranchEntity> getAllBranches() ;
 
-	    BranchForm getBranchById(Integer branchId);
 
-	    List<BranchForm> getAllBranches();
+	    public BranchEntity getBranchWithDepartments(Integer branchId) ;
+
 	    
-	    
-	    public List<BranchForm> getBranchesByOrganizationId(Long organizationId);
 
 }

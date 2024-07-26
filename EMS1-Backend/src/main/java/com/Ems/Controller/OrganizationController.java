@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Controller;
+package com.Ems.Controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.EmployeeManagementSystem.Entity.OrganizationEntity;
-import com.EmployeeManagementSystem.Service.OrganizationService;
-import com.EmployeeManagementSystem.dto.OrganizationForm;
+import com.Ems.Entity.OrganizationEntity;
+import com.Ems.Service.OrganizationService;
+import com.Ems.dto.OrganizationForm;
 
 
 

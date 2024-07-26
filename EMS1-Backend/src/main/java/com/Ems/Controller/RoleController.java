@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Controller;
+package com.Ems.Controller;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.EmployeeManagementSystem.Entity.RoleEntity;
-import com.EmployeeManagementSystem.dto.RoleDto;
+import com.Ems.Entity.RoleEntity;
+import com.Ems.dto.RoleDto;
 
 
 @RestController
@@ -22,7 +22,7 @@ import com.EmployeeManagementSystem.dto.RoleDto;
 public class RoleController {
 	
 	@Autowired
-	private com.EmployeeManagementSystem.Service.RoleService roleService;
+	private com.Ems.Service.RoleService roleService;
 	
 	@PostMapping("/save/{departmentId}/{subDepartmentId}")
 	public RoleEntity AddRole(

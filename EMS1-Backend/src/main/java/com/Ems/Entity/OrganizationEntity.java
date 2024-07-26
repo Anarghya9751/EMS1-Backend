@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.Entity;
+package com.Ems.Entity;
 
 
 import java.util.Set;
@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -63,11 +64,11 @@ public class OrganizationEntity {
 	private String description;
 	
 	
-	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private Set<BranchEntity> branches;
 	
-	 @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	 @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	 @JsonBackReference
 	 private Set<DepartmentEntity> departments;
 

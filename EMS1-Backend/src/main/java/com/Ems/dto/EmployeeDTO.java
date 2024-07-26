@@ -1,4 +1,4 @@
-package com.EmployeeManagementSystem.dto;
+package com.Ems.dto;
 
 public class EmployeeDTO {
 
@@ -12,11 +12,18 @@ public class EmployeeDTO {
     private byte[] profileImages;
     private int branchId;
     private int departmentId;
+    private Long organizationId;
     private Long subDepartmentId;
     
     
     
-    private String profileImagePath;
+    public Long getOrganizationId() {
+		return organizationId;
+	}
+	public void setOrganizationId(Long organizationId) {
+		this.organizationId = organizationId;
+	}
+	private String profileImagePath;
     
 
 	public String getProfileImagePath() {
