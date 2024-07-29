@@ -11,6 +11,7 @@ import com.Ems.Entity.DepartmentEntity;
 import com.Ems.Entity.RoleEntity;
 import com.Ems.Entity.SubDepartmentEntity;
 import com.Ems.Exception.DepartmentNotFoundException;
+import com.Ems.Exception.DuplicateDataException;
 import com.Ems.Exception.RoleNotFoundException;
 import com.Ems.Exception.SubDepartmentNotFoundException;
 import com.Ems.Repository.DepartmentRepository;
@@ -34,18 +35,39 @@ public class RoleServiceImpl implements RoleService {
 	private SubDepartmentRepository subDepartmentRepository;
 	
 	
+//	@Override
+//	public RoleEntity AddRole(RoleEntity roleEntity, Integer departrmentId, Long subDepartmentId) {
+//		DepartmentEntity department = departmentRepo.findById(departrmentId)
+//				.orElseThrow(() -> new DepartmentNotFoundException(departrmentId));
+//				
+//		SubDepartmentEntity subDepartment = subDepartmentRepository.findById(subDepartmentId)
+//				.orElseThrow(()  -> new SubDepartmentNotFoundException(subDepartmentId));
+//		
+//		roleEntity.setDepartment(department);
+//		roleEntity.setSubdepartment(subDepartment);
+//		return roleRepo.save(roleEntity);
+//	}
+	
 	@Override
-	public RoleEntity AddRole(RoleEntity roleEntity, Integer departrmentId, Long subDepartmentId) {
-		DepartmentEntity department = departmentRepo.findById(departrmentId)
-				.orElseThrow(() -> new DepartmentNotFoundException(departrmentId));
-				
-		SubDepartmentEntity subDepartment = subDepartmentRepository.findById(subDepartmentId)
-				.orElseThrow(()  -> new SubDepartmentNotFoundException(subDepartmentId));
-		
-		roleEntity.setDepartment(department);
-		roleEntity.setSubdepartment(subDepartment);
-		return roleRepo.save(roleEntity);
-	}
+    public RoleEntity AddRole(RoleEntity roleEntity, Integer departmentId, Long subDepartmentId) {
+        DepartmentEntity department = departmentRepo.findById(departmentId)
+                .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+                
+        SubDepartmentEntity subDepartment = subDepartmentRepository.findById(subDepartmentId)
+                .orElseThrow(() -> new SubDepartmentNotFoundException(subDepartmentId));
+        
+        roleEntity.setDepartment(department);
+        roleEntity.setSubdepartment(subDepartment);
+
+        boolean exists = roleRepo.existsByRoleNameAndRoleDescriptionAndDepartmentDepartmentIdAndSubdepartmentSubDepartmentId(
+            roleEntity.getRoleName(), roleEntity.getRoleDescription(), departmentId, subDepartmentId);
+        
+        if (exists) {
+            throw new DuplicateDataException("Role with the provided details already exists");
+        }
+
+        return roleRepo.save(roleEntity);
+    }
 
 	
 	@Override

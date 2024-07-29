@@ -34,66 +34,97 @@ public class OrganizationController {
 	
 	
 	@PostMapping("/save")
-	  public ResponseEntity<OrganizationEntity> AddEntity (
-			  @RequestParam("organizationName") String organizationName,
-			  @RequestParam("organizationType") String organizationType,
-			  @RequestParam("location") String location,
-			  @RequestParam("contactPersonName") String contactPersonName,
-			  @RequestParam("contactPersonEmail") String contactPersonEmail,
-			  @RequestParam("contactPersonPhoneNumber") String contactPersonPhoneNumber,
-			  @RequestParam("websiteURL") String websiteURL,
-			  @RequestParam("description")String  description,
-			  @RequestParam("registrationNumber") String registrationNumber,
-			  @RequestParam("logoURL") String logoURL) {
-//		 try {
-//	            byte[] documentBytes = logo.getBytes();
-//	            String documentFilePath = saveFileToDisk(logo);
-//	            if (documentFilePath == null) {
-//	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//	            }
-	            
-	            OrganizationEntity orgEntity = new OrganizationEntity();
-	            orgEntity.setOrganizationName(organizationName);
-	            orgEntity.setOrganizationType(organizationType);
-	            orgEntity.setLocation(location);
-	            orgEntity.setContactPersonName(contactPersonName);
-	            orgEntity.setContactPersonEmail(contactPersonEmail);
-	            orgEntity.setContactPersonPhoneNumber(contactPersonPhoneNumber);
-	            orgEntity.setWebsiteURL(websiteURL);
-	            orgEntity.setLogoURL(logoURL);
-//	            orgEntity.setLogo(documentBytes);
-//	            orgEntity.setDocumentPath(documentFilePath);
-	            orgEntity.setRegistrationNumber(registrationNumber);
-	            orgEntity.setDescription(description);
-	            
-	            
-	            OrganizationEntity Entity = service.AddEntity(orgEntity);
-	            return ResponseEntity.status(HttpStatus.CREATED).body(Entity);
-	            
-		 }
-//		 catch (Exception e) {
-//	            e.printStackTrace();
-//	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//	        }
-//				
-//		 
-//	  }
-//	 private String saveFileToDisk(MultipartFile file) {
-//	        try {
-//	            String uploadDir = "D:\\Users\\My Files";
-//	            File dir = new File(uploadDir);
-//	            if (!dir.exists()) {
-//	                dir.mkdirs();
-//	            }
-//
-//	            String filePath = uploadDir + "/" + file.getOriginalFilename();
-//	            file.transferTo(new File(filePath));
-//	            return filePath;
-//	        } catch (IOException e) {
-//	            e.printStackTrace();
-//	            return null;
-//	        }
-	    
+    public ResponseEntity<OrganizationEntity> addOrganization(
+            @RequestParam String organizationName,
+            @RequestParam String organizationType,
+            @RequestParam String location,
+            @RequestParam String contactPersonName,
+            @RequestParam String contactPersonEmail,
+            @RequestParam String contactPersonPhoneNumber,
+            @RequestParam String websiteURL,
+            @RequestParam String registrationNumber,
+            @RequestParam String description,
+            @RequestParam String logoURL) {
+
+        OrganizationEntity organizationEntity = new OrganizationEntity();
+        organizationEntity.setOrganizationName(organizationName);
+        organizationEntity.setOrganizationType(organizationType);
+        organizationEntity.setLocation(location);
+        organizationEntity.setContactPersonName(contactPersonName);
+        organizationEntity.setContactPersonEmail(contactPersonEmail);
+        organizationEntity.setContactPersonPhoneNumber(contactPersonPhoneNumber);
+        organizationEntity.setWebsiteURL(websiteURL);
+        organizationEntity.setRegistrationNumber(registrationNumber);
+        organizationEntity.setDescription(description);
+        organizationEntity.setLogoURL(logoURL);
+
+        OrganizationEntity addedEntity = service.addEntity(organizationEntity);
+        return new ResponseEntity<>(addedEntity, HttpStatus.CREATED);
+    }
+
+	
+	
+//	@PostMapping("/save")
+//	  public ResponseEntity<OrganizationEntity> addEntity (
+//			  @RequestParam("organizationName") String organizationName,
+//			  @RequestParam("organizationType") String organizationType,
+//			  @RequestParam("location") String location,
+//			  @RequestParam("contactPersonName") String contactPersonName,
+//			  @RequestParam("contactPersonEmail") String contactPersonEmail,
+//			  @RequestParam("contactPersonPhoneNumber") String contactPersonPhoneNumber,
+//			  @RequestParam("websiteURL") String websiteURL,
+//			  @RequestParam("description")String  description,
+//			  @RequestParam("registrationNumber") String registrationNumber,
+//			  @RequestParam("logoURL") String logoURL) {
+////		 try {
+////	            byte[] documentBytes = logo.getBytes();
+////	            String documentFilePath = saveFileToDisk(logo);
+////	            if (documentFilePath == null) {
+////	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+////	            }
+//	            
+//	            OrganizationEntity orgEntity = new OrganizationEntity();
+//	            orgEntity.setOrganizationName(organizationName);
+//	            orgEntity.setOrganizationType(organizationType);
+//	            orgEntity.setLocation(location);
+//	            orgEntity.setContactPersonName(contactPersonName);
+//	            orgEntity.setContactPersonEmail(contactPersonEmail);
+//	            orgEntity.setContactPersonPhoneNumber(contactPersonPhoneNumber);
+//	            orgEntity.setWebsiteURL(websiteURL);
+//	            orgEntity.setLogoURL(logoURL);
+////	            orgEntity.setLogo(documentBytes);
+////	            orgEntity.setDocumentPath(documentFilePath);
+//	            orgEntity.setRegistrationNumber(registrationNumber);
+//	            orgEntity.setDescription(description);
+//	            
+//	            
+//	            OrganizationEntity Entity = service.addEntity(orgEntity);
+//	            return ResponseEntity.status(HttpStatus.CREATED).body(Entity);
+//	            
+//		 }
+////		 catch (Exception e) {
+////	            e.printStackTrace();
+////	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+////	        }
+////				
+////		 
+////	  }
+////	 private String saveFileToDisk(MultipartFile file) {
+////	        try {
+////	            String uploadDir = "D:\\Users\\My Files";
+////	            File dir = new File(uploadDir);
+////	            if (!dir.exists()) {
+////	                dir.mkdirs();
+////	            }
+////
+////	            String filePath = uploadDir + "/" + file.getOriginalFilename();
+////	            file.transferTo(new File(filePath));
+////	            return filePath;
+////	        } catch (IOException e) {
+////	            e.printStackTrace();
+////	            return null;
+////	        }
+//	    
 	
 	
 	@GetMapping("/get/{Id}")
@@ -115,7 +146,16 @@ public class OrganizationController {
 	}
 	
 	
-	@PutMapping("/upload/{organizationId}")
+//	@PutMapping("/Update/{organizationId}")
+//	public ResponseEntity<OrganizationEntity> updateOrganization(
+//	        @PathVariable Long organizationId,
+//	        @RequestBody OrganizationForm organizationForm) {
+//
+//	    OrganizationEntity updatedOrganization = service.updateOrganization(organizationId, organizationForm);
+//	    return new ResponseEntity<>(updatedOrganization, HttpStatus.OK);
+//	}
+	
+	@PutMapping("/Update/{organizationId}")
 	public ResponseEntity<OrganizationEntity> updateOrganization(
 			@PathVariable Long organizationId,
 			@RequestParam String organizationName,
@@ -127,15 +167,7 @@ public class OrganizationController {
 			@RequestParam String websiteURL,
 			@RequestParam String registrationNumber,
 			@RequestParam String description,
-			@RequestParam String logoURL){
-//		
-//		 try {
-//	            byte[] documentBytes = logo.getBytes();
-//	            String documentFilePath = saveFileToDiskk(logo);
-//	            if (documentFilePath == null) {
-//	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//	            }	            
-		OrganizationForm orgentity = new OrganizationForm();
+			@RequestParam String logoURL){OrganizationForm orgentity = new OrganizationForm();
 		
 		orgentity.setOrganizationName(organizationName);
 		orgentity.setOrganizationType(organizationType);
@@ -152,29 +184,7 @@ public class OrganizationController {
 		
 		OrganizationEntity updateOrganization = service.updateOrganization(organizationId, orgentity);
 		return new ResponseEntity<>(updateOrganization,HttpStatus.OK);
+		}
 		 
 
-//		 }catch (Exception e) {
-//	            e.printStackTrace();
-//	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//	        }
-//	}
-//	 private String saveFileToDiskk(MultipartFile file) {
-//	        try {
-//	            String uploadDir = "D:\\Users\\My Files";
-//	            File dir = new File(uploadDir);
-//	            if (!dir.exists()) {
-//	                dir.mkdirs();
-//	            }
-//
-//	            String filePath = uploadDir + "/" + file.getOriginalFilename();
-//	            file.transferTo(new File(filePath));
-//	            return filePath;
-//	        } catch (IOException e) {
-//	            e.printStackTrace();
-//	            return null;
-//	        }
-//	    }
-		 
-}
 }
