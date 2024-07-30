@@ -86,7 +86,7 @@ public class SevriceImpLogin implements Servicelogin {
 	        message.setSubject("Password Reset Confirmation");
 	        message.setText("Hello " + username + ",\n\nYour password has been reset successfully. " +
 	                        "New password: " + newpassword + "\n\nBest Regards,\nYour Team");
-	        javaMailSender.send(message); // Sending the email
+	        javaMailSender.send(message); 
 	    }
 
 

@@ -13,7 +13,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -71,8 +73,21 @@ public class OrganizationEntity {
 	 @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	 @JsonBackReference
 	 private Set<DepartmentEntity> departments;
+	 
+	    @ManyToOne(fetch = FetchType.EAGER)
+	    @JoinColumn(name = "login_id", nullable = false)
+	    private Entitylogin login;
+
+	    
+	    
 
 
+	public Entitylogin getLogin() {
+			return login;
+		}
+		public void setLogin(Entitylogin login) {
+			this.login = login;
+		}
 	public Long getOrganizationId() {
 		return organizationId;
 	}

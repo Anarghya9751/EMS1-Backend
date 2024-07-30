@@ -13,7 +13,7 @@ public interface OrganizationService {
 	 
 	 
 	 
-	 public OrganizationEntity addEntity(OrganizationEntity entity) ;
+	public OrganizationEntity addEntity(Long logId, OrganizationEntity entity) ;
 		
 	 OrganizationEntity getById(Long Id);
 	 

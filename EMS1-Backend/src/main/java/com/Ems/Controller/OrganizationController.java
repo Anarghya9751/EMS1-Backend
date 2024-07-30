@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.Ems.Entity.OrganizationEntity;
+import com.Ems.Exception.DuplicateDataException;
+import com.Ems.Exception.NotSuperAdminException;
 import com.Ems.Service.OrganizationService;
 import com.Ems.dto.OrganizationForm;
 
@@ -33,8 +35,9 @@ public class OrganizationController {
 	private OrganizationService service;
 	
 	
-	@PostMapping("/save")
-    public ResponseEntity<OrganizationEntity> addOrganization(
+	@PostMapping("/create/{logId}")
+    public ResponseEntity<String> createOrganization(
+            @PathVariable Long logId,
             @RequestParam String organizationName,
             @RequestParam String organizationType,
             @RequestParam String location,
@@ -45,86 +48,31 @@ public class OrganizationController {
             @RequestParam String registrationNumber,
             @RequestParam String description,
             @RequestParam String logoURL) {
+        try {
+            OrganizationEntity organizationEntity = new OrganizationEntity();
+            organizationEntity.setOrganizationName(organizationName);
+            organizationEntity.setOrganizationType(organizationType);
+            organizationEntity.setLocation(location);
+            organizationEntity.setContactPersonName(contactPersonName);
+            organizationEntity.setContactPersonEmail(contactPersonEmail);
+            organizationEntity.setContactPersonPhoneNumber(contactPersonPhoneNumber);
+            organizationEntity.setWebsiteURL(websiteURL);
+            organizationEntity.setRegistrationNumber(registrationNumber);
+            organizationEntity.setDescription(description);
+            organizationEntity.setLogoURL(logoURL);
 
-        OrganizationEntity organizationEntity = new OrganizationEntity();
-        organizationEntity.setOrganizationName(organizationName);
-        organizationEntity.setOrganizationType(organizationType);
-        organizationEntity.setLocation(location);
-        organizationEntity.setContactPersonName(contactPersonName);
-        organizationEntity.setContactPersonEmail(contactPersonEmail);
-        organizationEntity.setContactPersonPhoneNumber(contactPersonPhoneNumber);
-        organizationEntity.setWebsiteURL(websiteURL);
-        organizationEntity.setRegistrationNumber(registrationNumber);
-        organizationEntity.setDescription(description);
-        organizationEntity.setLogoURL(logoURL);
-
-        OrganizationEntity addedEntity = service.addEntity(organizationEntity);
-        return new ResponseEntity<>(addedEntity, HttpStatus.CREATED);
+            OrganizationEntity createdOrganization = service.addEntity(logId, organizationEntity);
+            return ResponseEntity.ok("Organization created successfully");
+        } catch (DuplicateDataException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (NotSuperAdminException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("An error occurred: " + e.getMessage());
+        }
     }
+	
 
-	
-	
-//	@PostMapping("/save")
-//	  public ResponseEntity<OrganizationEntity> addEntity (
-//			  @RequestParam("organizationName") String organizationName,
-//			  @RequestParam("organizationType") String organizationType,
-//			  @RequestParam("location") String location,
-//			  @RequestParam("contactPersonName") String contactPersonName,
-//			  @RequestParam("contactPersonEmail") String contactPersonEmail,
-//			  @RequestParam("contactPersonPhoneNumber") String contactPersonPhoneNumber,
-//			  @RequestParam("websiteURL") String websiteURL,
-//			  @RequestParam("description")String  description,
-//			  @RequestParam("registrationNumber") String registrationNumber,
-//			  @RequestParam("logoURL") String logoURL) {
-////		 try {
-////	            byte[] documentBytes = logo.getBytes();
-////	            String documentFilePath = saveFileToDisk(logo);
-////	            if (documentFilePath == null) {
-////	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-////	            }
-//	            
-//	            OrganizationEntity orgEntity = new OrganizationEntity();
-//	            orgEntity.setOrganizationName(organizationName);
-//	            orgEntity.setOrganizationType(organizationType);
-//	            orgEntity.setLocation(location);
-//	            orgEntity.setContactPersonName(contactPersonName);
-//	            orgEntity.setContactPersonEmail(contactPersonEmail);
-//	            orgEntity.setContactPersonPhoneNumber(contactPersonPhoneNumber);
-//	            orgEntity.setWebsiteURL(websiteURL);
-//	            orgEntity.setLogoURL(logoURL);
-////	            orgEntity.setLogo(documentBytes);
-////	            orgEntity.setDocumentPath(documentFilePath);
-//	            orgEntity.setRegistrationNumber(registrationNumber);
-//	            orgEntity.setDescription(description);
-//	            
-//	            
-//	            OrganizationEntity Entity = service.addEntity(orgEntity);
-//	            return ResponseEntity.status(HttpStatus.CREATED).body(Entity);
-//	            
-//		 }
-////		 catch (Exception e) {
-////	            e.printStackTrace();
-////	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-////	        }
-////				
-////		 
-////	  }
-////	 private String saveFileToDisk(MultipartFile file) {
-////	        try {
-////	            String uploadDir = "D:\\Users\\My Files";
-////	            File dir = new File(uploadDir);
-////	            if (!dir.exists()) {
-////	                dir.mkdirs();
-////	            }
-////
-////	            String filePath = uploadDir + "/" + file.getOriginalFilename();
-////	            file.transferTo(new File(filePath));
-////	            return filePath;
-////	        } catch (IOException e) {
-////	            e.printStackTrace();
-////	            return null;
-////	        }
-//	    
 	
 	
 	@GetMapping("/get/{Id}")

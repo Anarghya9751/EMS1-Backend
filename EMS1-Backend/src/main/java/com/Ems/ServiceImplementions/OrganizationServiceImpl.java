@@ -3,14 +3,16 @@ package com.Ems.ServiceImplementions;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.Ems.Entity.Entitylogin;
 import com.Ems.Entity.OrganizationEntity;
 import com.Ems.Exception.DuplicateDataException;
+import com.Ems.Exception.NotSuperAdminException;
 import com.Ems.Exception.OrganizationNotFoundException;
 import com.Ems.Repository.OrganizationRepository;
+import com.Ems.Repository.Reprologin;
 import com.Ems.Service.OrganizationService;
 import com.Ems.dto.OrganizationForm;
 
@@ -21,30 +23,25 @@ public class OrganizationServiceImpl implements OrganizationService {
 	
 	@Autowired
 	private OrganizationRepository repo;
-
-//	 public OrganizationEntity addEntity(OrganizationEntity entity) {
-//	        return repo.save(entity);
-//	    }
-
-//	 public OrganizationEntity addEntity(OrganizationEntity entity) {
-//	        boolean exists = repo.existsByOrganizationNameAndOrganizationTypeAndLocationAndContactPersonNameAndContactPersonEmailAndContactPersonPhoneNumber(
-//	                entity.getOrganizationName(), entity.getOrganizationType(), entity.getLocation(), 
-//	                entity.getContactPersonName(), entity.getContactPersonEmail(), entity.getContactPersonPhoneNumber());
-//
-//	        if (exists) {
-//	            throw new DuplicateDataException("Organization with the provided details already exists");
-//	        }
-//	        
-//	        return repo.save(entity);
-//	    }
 	
-	public OrganizationEntity addEntity(OrganizationEntity entity) {
+	@Autowired
+    private Reprologin entityloginRepository;
+
+
+	public OrganizationEntity addEntity(Long logId, OrganizationEntity entity) {
+        Entitylogin login = entityloginRepository.findById(logId)
+                .orElseThrow(() -> new RuntimeException("Login not found"));
+
+        if (!"SuperAdmin".equals(login.getRole())) {
+            throw new NotSuperAdminException("Only SuperAdmin can create an organization");
+        }
+
         StringBuilder duplicateFields = new StringBuilder();
 
         if (repo.existsByOrganizationName(entity.getOrganizationName())) {
             duplicateFields.append("Organization name ");
         }
-       
+
         if (repo.existsByContactPersonName(entity.getContactPersonName())) {
             if (duplicateFields.length() > 0) duplicateFields.append(", ");
             duplicateFields.append("Contact person name ");
@@ -57,13 +54,15 @@ public class OrganizationServiceImpl implements OrganizationService {
             if (duplicateFields.length() > 0) duplicateFields.append(", ");
             duplicateFields.append("Contact person phone number ");
         }
-        
+
         if (duplicateFields.length() > 0) {
             throw new DuplicateDataException("Organization with the provided details (" + duplicateFields.toString() + ") already exists");
         }
 
+        entity.setLogin(login);
         return repo.save(entity);
     }
+
 	    
 	@Override
 	public OrganizationEntity getById(Long Id) {
@@ -113,6 +112,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 				return repo.save(organization);
 	}
 
+
+	
 	
 
 	
