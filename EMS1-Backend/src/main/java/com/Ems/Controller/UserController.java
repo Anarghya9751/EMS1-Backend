@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Ems.Entity.Entitylogin;
+import com.Ems.Entity.Entitylogin;  
 import com.Ems.Service.Servicelogin;
 import com.Ems.dto.EntityloginDTO;
 
@@ -32,7 +32,8 @@ public class UserController {
 	@PostMapping("/saveUser")
     public ResponseEntity<String> saveUser(@RequestParam String userName,
                                            @RequestParam String password,
-                                           @RequestParam String role) {
+                                           @RequestParam String role)
+	{
         EntityloginDTO entityDTO = new EntityloginDTO();
         entityDTO.setUserName(userName);
         entityDTO.setPassword(password);
@@ -41,15 +42,16 @@ public class UserController {
         String result = userService.saveUsernameAndPassword(entityDTO);
         return ResponseEntity.ok(result);
     }
+	
 	    @PostMapping("/login")
-	    public ResponseEntity<Boolean> login(@RequestParam String userName,
-	                                         @RequestParam String password) {
-	        return userService.login(userName, password);
+	    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+	        return userService.login(username, password);
 	    }
 
 	    @PutMapping("/updatePassword")
 	    public ResponseEntity<Boolean> updatePassword(@RequestParam String userName,
-	                                                  @RequestParam String newPassword) {
+	                                                  @RequestParam String newPassword)
+	    {
 	        boolean isUpdated = userService.updateUserPassword(userName, newPassword);
 	        return ResponseEntity.ok(isUpdated);
 	    }
@@ -57,12 +59,25 @@ public class UserController {
 	    @PostMapping("/sendPasswordReset")
 	    public ResponseEntity<Void> sendPasswordReset(@RequestParam String email,
 	                                                  @RequestParam String userName,
-	                                                  @RequestParam String newPassword) {
-	        try {
+	                                                  @RequestParam String newPassword)
+	    {
+	    	
+	        try 
+	        {
+	        	
 	        	userService.sendPasswordReset(email, userName, newPassword);
 	            return ResponseEntity.ok().build();
-	        } catch (Exception e) {
+	            
+	            
+	        }
+	        catch (Exception e) 
+	        {
 	            return ResponseEntity.status(500).build();
 	        }
+	        
+	        
 	    }
+	    
+	    
+	    
 }

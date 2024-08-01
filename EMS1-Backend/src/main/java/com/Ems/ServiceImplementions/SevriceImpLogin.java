@@ -36,18 +36,20 @@ public class SevriceImpLogin implements Servicelogin {
 
         return "User saved successfully";
     }
-
     @Override
-    public  ResponseEntity<Boolean> login(String username, String password) {
+    public ResponseEntity<String> login(String username, String password) {
         Optional<Entitylogin> employee = reprolog.findByUserName(username);
         if (employee.isPresent()) {
             Entitylogin emp = employee.get();
             if (emp.getPassword().equals(password)) {
-                boolean isSuperAdmin = "superadmin".equals(emp.getRole());
-                return ResponseEntity.ok(isSuperAdmin); 
+                if ("superadmin".equals(emp.getRole())) {
+                    return ResponseEntity.ok("Welcome, SuperAdmin!"); // Message for SuperAdmin
+                } else {
+                    return ResponseEntity.ok("Login successful! Role: " + emp.getRole()); // Message with role name
+                }
             }
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false); 
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials"); // Error message
     }
 
  

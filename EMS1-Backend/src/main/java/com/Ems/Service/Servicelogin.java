@@ -15,7 +15,7 @@ public interface Servicelogin {
 	
     public String saveUsernameAndPassword(EntityloginDTO entityDTO) ;
 
-    ResponseEntity<Boolean> login(String username, String password);
+    public ResponseEntity<String> login(String username, String password) ;
     
 
 	void sendPasswordReset(String string, String username,String newpassword) throws MessagingException;

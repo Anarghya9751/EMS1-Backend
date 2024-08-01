@@ -25,8 +25,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 	private OrganizationRepository repo;
 	
 	@Autowired
-    private Reprologin entityloginRepository;
-
+	private Reprologin entityloginRepository;
+	
+	
 
 	public OrganizationEntity addEntity(Long logId, OrganizationEntity entity) {
         Entitylogin login = entityloginRepository.findById(logId)
@@ -63,20 +64,16 @@ public class OrganizationServiceImpl implements OrganizationService {
         return repo.save(entity);
     }
 
-	    
 	@Override
 	public OrganizationEntity getById(Long Id) {
 		Optional<OrganizationEntity> optional = repo.findById(Id);
 		return optional.orElse(null);
 	}
-
-
 	@Override
 	public List<OrganizationEntity> getAllOrganizations() {
 		
 		return repo.findAll();
 	}
-
 	@Override
 	public String deleteById(Long Id) {
 		Optional<OrganizationEntity> optional = repo.findById(Id);
@@ -107,14 +104,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         organization.setRegistrationNumber(updatedOrganizationDTO.getRegistrationNumber());
         organization.setDescription(updatedOrganizationDTO.getDescription());
         
-        
-        
 				return repo.save(organization);
 	}
 
-
-	
-	
-
-	
 }
