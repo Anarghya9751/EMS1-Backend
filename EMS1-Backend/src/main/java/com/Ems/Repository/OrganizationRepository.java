@@ -1,6 +1,8 @@
 package com.Ems.Repository;
 
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,18 +16,9 @@ public interface OrganizationRepository extends JpaRepository<OrganizationEntity
 			String organizationName, String organizationType, String location, String contactPersonName,
 			String contactPersonEmail, String contactPersonPhoneNumber);
 
-
-	boolean existsByOrganizationName(String organizationName);
-
-	boolean existsByRegistrationNumber(String registrationNumber);
-
-	boolean existsByContactPersonEmail(String contactPersonEmail);
-
-	boolean existsByContactPersonPhoneNumber(String contactPersonPhoneNumber);
+	Optional<OrganizationEntity> findByContactPersonEmail(String username);
 
 
-	boolean existsByContactPersonName(String contactPersonName);
 
-//	boolean existsByWebsiteURL(String websiteURL);
 
 }

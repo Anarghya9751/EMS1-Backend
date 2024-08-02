@@ -35,20 +35,7 @@ public class Entitylogin {
 		this.role =role;
 	}
 
-    @OneToMany(mappedBy = "login",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<OrganizationEntity> organizations;
-    
-    
-    
-
-	public Set<OrganizationEntity> getOrganizations() {
-		return organizations;
-	}
-
-	public void setOrganizations(Set<OrganizationEntity> organizations) {
-		this.organizations = organizations;
-	}
+   
 
     public long getLogId() {
         return logId;

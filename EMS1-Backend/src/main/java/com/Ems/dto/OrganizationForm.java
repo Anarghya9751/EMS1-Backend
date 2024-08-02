@@ -15,6 +15,9 @@ public class OrganizationForm {
 	private String contactPersonPhoneNumber;
 	private String WebsiteURL;
 	private String logoURL;
+	private String password;
+	
+	private String role;
 //	private byte[] logo;
 //	private String documentPath;
 	  
@@ -105,5 +108,18 @@ public class OrganizationForm {
 	public void setBranches(Set<BranchEntity> branches) {
 		this.branches = branches;
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
 
 }

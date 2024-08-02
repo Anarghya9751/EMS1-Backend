@@ -21,7 +21,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: Subbu306
-    url: jdbc:mysql://localhost:3306/dj?maxAllowedPacket=3145728000
+    url: jdbc:mysql://localhost:3306/emsonedb?maxAllowedPacket=3145728000
     username: root
     tomcat:
       test-on-borrow: true

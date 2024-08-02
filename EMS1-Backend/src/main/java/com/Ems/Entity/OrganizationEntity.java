@@ -34,6 +34,10 @@ public class OrganizationEntity {
 	private String organizationType;
 	private String location;
 	private String contactPersonName;
+	private String password;
+	private String role;
+	
+	private String emailOtp;
 	
 	@NotBlank(message = "Email address cannot be blank")
     @Email(message = "Invalid email format")
@@ -74,20 +78,10 @@ public class OrganizationEntity {
 	 @JsonBackReference
 	 private Set<DepartmentEntity> departments;
 	 
-	    @ManyToOne(fetch = FetchType.EAGER)
-	    @JoinColumn(name = "login_id", nullable = false)
-	    private Entitylogin login;
-
-	    
-	    
+	   
 
 
-	public Entitylogin getLogin() {
-			return login;
-		}
-		public void setLogin(Entitylogin login) {
-			this.login = login;
-		}
+	
 	public Long getOrganizationId() {
 		return organizationId;
 	}
@@ -161,7 +155,25 @@ public class OrganizationEntity {
 	public void setDepartments(Set<DepartmentEntity> departments) {
 		this.departments = departments;
 	}
-	 
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public String getEmailOtp() {
+		return emailOtp;
+	}
+	public void setEmailOtp(String emailOtp) {
+		this.emailOtp = emailOtp;
+	}
+	
 	 
 	 
 	

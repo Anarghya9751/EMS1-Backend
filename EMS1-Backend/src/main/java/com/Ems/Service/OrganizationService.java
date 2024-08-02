@@ -13,9 +13,9 @@ public interface OrganizationService {
 	 
 	 
 	 
-	public OrganizationEntity addEntity(Long logId, OrganizationEntity entity) ;
+	public OrganizationEntity addEntity(OrganizationForm form) ;
 		
-	 OrganizationEntity getById(Long Id);
+	 OrganizationEntity getById(Long organizationId);
 	 
 	 
 	 OrganizationEntity updateOrganization(Long organizationId, OrganizationForm updatedOrganization);
@@ -23,7 +23,7 @@ public interface OrganizationService {
 	 
 	 List<OrganizationEntity>getAllOrganizations();
 	 
-	 public String deleteById(Long Id);
+	 public String deleteById(Long organizationId);
 
 
 

@@ -88,10 +88,10 @@ public class EmployeeServiceImplemention implements EmployeeService {
             return "Contact number already exists";
         }
         if (employeeRepository.existsByFirstName(employee.getFirstName())) {
-            return "Contact number already exists";
+            return "Firstname already exists";
         }
         if (employeeRepository.existsByLastName(employee.getLastName())) {
-            return "Contact number already exists";
+            return "Lastname number already exists";
         }
         
 

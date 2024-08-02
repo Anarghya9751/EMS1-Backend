@@ -27,46 +27,46 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Autowired
 	private Reprologin entityloginRepository;
 	
-	
+	  
 
-	public OrganizationEntity addEntity(Long logId, OrganizationEntity entity) {
-        Entitylogin login = entityloginRepository.findById(logId)
-                .orElseThrow(() -> new RuntimeException("Login not found"));
+	 public OrganizationEntity addEntity(OrganizationForm form) {
+	        StringBuilder duplicateFields = new StringBuilder();
 
-        if (!"SuperAdmin".equals(login.getRole())) {
-            throw new NotSuperAdminException("Only SuperAdmin can create an organization");
-        }
+	        if (repo.existsByOrganizationNameAndOrganizationTypeAndLocationAndContactPersonNameAndContactPersonEmailAndContactPersonPhoneNumber(
+	                form.getOrganizationName(),
+	                form.getOrganizationType(),
+	                form.getLocation(),
+	                form.getContactPersonName(),
+	                form.getContactPersonEmail(),
+	                form.getContactPersonPhoneNumber())) {
+	            duplicateFields.append("Organization name, type, location, contact person name, email, or phone number");
+	        }
 
-        StringBuilder duplicateFields = new StringBuilder();
+	        if (duplicateFields.length() > 0) {
+	            throw new DuplicateDataException("Organization with the provided details (" + duplicateFields.toString() + ") already exists");
+	        }
 
-        if (repo.existsByOrganizationName(entity.getOrganizationName())) {
-            duplicateFields.append("Organization name ");
-        }
+	        OrganizationEntity entity = new OrganizationEntity();
+	        entity.setOrganizationName(form.getOrganizationName());
+	        entity.setOrganizationType(form.getOrganizationType());
+	        entity.setLocation(form.getLocation());
+	        entity.setContactPersonName(form.getContactPersonName());
+	        entity.setContactPersonEmail(form.getContactPersonEmail());
+	        entity.setContactPersonPhoneNumber(form.getContactPersonPhoneNumber());
+	        entity.setWebsiteURL(form.getWebsiteURL());
+	        entity.setRegistrationNumber(form.getRegistrationNumber());
+	        entity.setDescription(form.getDescription());
+	        entity.setLogoURL(form.getLogoURL());
+	        entity.setRole(form.getRole());
+	        
 
-        if (repo.existsByContactPersonName(entity.getContactPersonName())) {
-            if (duplicateFields.length() > 0) duplicateFields.append(", ");
-            duplicateFields.append("Contact person name ");
-        }
-        if (repo.existsByContactPersonEmail(entity.getContactPersonEmail())) {
-            if (duplicateFields.length() > 0) duplicateFields.append(", ");
-            duplicateFields.append("Contact person email ");
-        }
-        if (repo.existsByContactPersonPhoneNumber(entity.getContactPersonPhoneNumber())) {
-            if (duplicateFields.length() > 0) duplicateFields.append(", ");
-            duplicateFields.append("Contact person phone number ");
-        }
 
-        if (duplicateFields.length() > 0) {
-            throw new DuplicateDataException("Organization with the provided details (" + duplicateFields.toString() + ") already exists");
-        }
-
-        entity.setLogin(login);
-        return repo.save(entity);
-    }
+	        return repo.save(entity);
+	    }
 
 	@Override
-	public OrganizationEntity getById(Long Id) {
-		Optional<OrganizationEntity> optional = repo.findById(Id);
+	public OrganizationEntity getById(Long organizationId) {
+		Optional<OrganizationEntity> optional = repo.findById(organizationId);
 		return optional.orElse(null);
 	}
 	@Override
@@ -75,10 +75,10 @@ public class OrganizationServiceImpl implements OrganizationService {
 		return repo.findAll();
 	}
 	@Override
-	public String deleteById(Long Id) {
-		Optional<OrganizationEntity> optional = repo.findById(Id);
+	public String deleteById(Long organizationId) {
+		Optional<OrganizationEntity> optional = repo.findById(organizationId);
 		if(optional.isPresent()) {
-			repo.deleteById(Id);
+			repo.deleteById(organizationId);
 			return "deleted successfully.";
 		}
 		return "not deleted";

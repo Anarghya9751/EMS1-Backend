@@ -35,49 +35,49 @@ public class OrganizationController {
 	private OrganizationService service;
 	
 	
-	@PostMapping("/create/{logId}")
-    public ResponseEntity<String> createOrganization(
-            @PathVariable Long logId,
-            @RequestParam String organizationName,
-            @RequestParam String organizationType,
-            @RequestParam String location,
-            @RequestParam String contactPersonName,
-            @RequestParam String contactPersonEmail,
-            @RequestParam String contactPersonPhoneNumber,
-            @RequestParam String websiteURL,
-            @RequestParam String registrationNumber,
-            @RequestParam String description,
-            @RequestParam String logoURL) {
-        try {
-            OrganizationEntity organizationEntity = new OrganizationEntity();
-            organizationEntity.setOrganizationName(organizationName);
-            organizationEntity.setOrganizationType(organizationType);
-            organizationEntity.setLocation(location);
-            organizationEntity.setContactPersonName(contactPersonName);
-            organizationEntity.setContactPersonEmail(contactPersonEmail);
-            organizationEntity.setContactPersonPhoneNumber(contactPersonPhoneNumber);
-            organizationEntity.setWebsiteURL(websiteURL);
-            organizationEntity.setRegistrationNumber(registrationNumber);
-            organizationEntity.setDescription(description);
-            organizationEntity.setLogoURL(logoURL);
+	@PostMapping("/create")
+	public ResponseEntity<String> addOrganization(
+	        @RequestParam String organizationName,
+	        @RequestParam String organizationType,
+	        @RequestParam String location,
+	        @RequestParam String contactPersonName,
+	        @RequestParam String contactPersonEmail,
+	        @RequestParam String contactPersonPhoneNumber,
+	        @RequestParam String websiteURL,
+	        @RequestParam String registrationNumber,
+	        @RequestParam String description,
+	        @RequestParam String logoURL,
+	        @RequestParam String role) {
 
-            OrganizationEntity createdOrganization = service.addEntity(logId, organizationEntity);
-            return ResponseEntity.ok("Organization created successfully");
-        } catch (DuplicateDataException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (NotSuperAdminException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("An error occurred: " + e.getMessage());
-        }
-    }
-	
+	    try {
+	        OrganizationForm organizationForm = new OrganizationForm();
+	        organizationForm.setOrganizationName(organizationName);
+	        organizationForm.setOrganizationType(organizationType);
+	        organizationForm.setLocation(location);
+	        organizationForm.setContactPersonName(contactPersonName);
+	        organizationForm.setContactPersonEmail(contactPersonEmail);
+	        organizationForm.setContactPersonPhoneNumber(contactPersonPhoneNumber);
+	        organizationForm.setWebsiteURL(websiteURL);
+	        organizationForm.setRegistrationNumber(registrationNumber);
+	        organizationForm.setDescription(description);
+	        organizationForm.setLogoURL(logoURL);
+	        organizationForm.setRole(role);
+
+	        OrganizationEntity addedEntity = service.addEntity(organizationForm);
+
+	        return new ResponseEntity<>("Organization added successfully", HttpStatus.CREATED);
+
+	    } catch (DuplicateDataException e) {
+	        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>("An error occurred while adding the organization", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 
 	
-	
-	@GetMapping("/get/{Id}")
-	public ResponseEntity<OrganizationEntity>getById(@PathVariable Long Id){
-		OrganizationEntity organization = service.getById(Id);
+	@GetMapping("/get/{organizationId}")
+	public ResponseEntity<OrganizationEntity>getById(@PathVariable Long organizationId){
+		OrganizationEntity organization = service.getById(organizationId);
 		return ResponseEntity.ok().body(organization);
 	}
 	
@@ -88,9 +88,9 @@ public class OrganizationController {
 		return service.getAllOrganizations();
 	}
 	
-	@DeleteMapping("/delete/{Id}")
-	public String deleteById(@PathVariable Long Id){
-		return service.deleteById(Id);
+	@DeleteMapping("/delete/{organizationId}")
+	public String deleteById(@PathVariable Long organizationId){
+		return service.deleteById(organizationId);
 	}
 	
 	
