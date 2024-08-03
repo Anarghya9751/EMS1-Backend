@@ -1,0 +1,32 @@
+package com.Ems.Service;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.Ems.Entity.EmployeeEntity;
+import com.Ems.dto.EmployeeDTO;
+
+
+public interface EmployeeService {
+
+    public String saveEmployee(EmployeeEntity employee, Integer branchId, Integer departmentId, Long subDepartmentId, Long roleId, MultipartFile profileImages) throws IOException ;
+
+
+    EmployeeDTO findById(Long userId);
+
+    void saveEmployee(EmployeeDTO employeeDTO);
+
+    void updateProfile(EmployeeDTO employeeDTO);
+
+    void changePassword(Long userId, String password);
+
+    void updateProfileImage(Long userId, MultipartFile profileImages) throws Exception;
+    
+    List<EmployeeDTO> getAllEmployees();
+
+
+    public String deleteEmployee(Long employeeId) ;
+
+}
