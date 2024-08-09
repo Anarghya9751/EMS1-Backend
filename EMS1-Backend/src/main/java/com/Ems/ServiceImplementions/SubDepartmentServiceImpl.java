@@ -11,6 +11,7 @@ import com.Ems.Entity.DepartmentEntity;
 import com.Ems.Entity.SubDepartmentEntity;
 import com.Ems.Exception.DepartmentNotFoundException;
 import com.Ems.Exception.DuplicateDataException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Exception.SubDepartmentNotFoundException;
 import com.Ems.Repository.BranchRepository;
 import com.Ems.Repository.DepartmentRepository;
@@ -36,6 +37,20 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
 	    
 	    @Override
 	    public SubDepartmentEntity saveSubDepartment(SubDepartmentDto subDepartmentDto, int departmentId) {
+	        StringBuilder invalidFields = new StringBuilder();
+
+	        if (subDepartmentDto.getSubDepartmentName() == null || subDepartmentDto.getSubDepartmentName().trim().isEmpty()) {
+	            invalidFields.append("Sub-department name, ");
+	        }
+	        if (subDepartmentDto.getSubDepartmentDescription() == null || subDepartmentDto.getSubDepartmentDescription().trim().isEmpty()) {
+	            invalidFields.append("Sub-department description, ");
+	        }
+
+	        if (invalidFields.length() > 0) {
+	            invalidFields.setLength(invalidFields.length() - 2);
+	            throw new InvalidInputException("The following fields cannot be null or blank: " + invalidFields.toString());
+	        }
+
 	        DepartmentEntity department = departmentRepository.findById(departmentId)
 	                .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
 
@@ -58,6 +73,7 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
 
 	        return subDepartmentRepository.save(subDepartment);
 	    }
+
 	
 	    
 

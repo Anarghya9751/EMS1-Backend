@@ -16,6 +16,8 @@ import com.Ems.Entity.EmployeeEntity;
 import com.Ems.Entity.RoleEntity;
 import com.Ems.Entity.SubDepartmentEntity;
 import com.Ems.Exception.EmployeeNotFoundException;
+import com.Ems.Exception.InvalidInputException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Repository.BranchRepository;
 import com.Ems.Repository.DepartmentRepository;
 import com.Ems.Repository.EmployeeRepository;
@@ -45,96 +47,69 @@ public class EmployeeServiceImplemention implements EmployeeService {
 	@Autowired
     private RoleRepository roleRepository;
 
-    @Override
-    public String saveEmployee(EmployeeEntity employee, Integer branchId, Integer departmentId, Long subDepartmentId, Long roleId, MultipartFile profileImages) throws IOException {
-        if (profileImages != null && !profileImages.isEmpty()) {
-            employee.setProfileImages(profileImages.getBytes());
-        }
-
-        Optional<BranchEntity> branch = branchRepository.findById(branchId);
-        if (branch.isPresent()) {
-            employee.setBranch(branch.get());
-        } else {
-            return "Branch not found";
-        }
-
-        Optional<DepartmentEntity> department = departmentRepository.findById(departmentId);
-        if (department.isPresent()) {
-            employee.setDepartment(department.get());
-        } else {
-            return "Department not found";
-        }
-        Optional<SubDepartmentEntity> subDepartment = subDepartmentRepository.findById(subDepartmentId);
-        if (subDepartment.isPresent()) {
-            employee.setSubDepartment(subDepartment.get());
-        } else {
-            return "Sub-department not found.";
-        }
-
-        Optional<RoleEntity> role = roleRepository.findById(roleId);
-        if (role.isPresent()) {
-            employee.setRoles(role.get());
-        } else {
-            return "Role not found";
-        }
-
-        if (employeeRepository.existsByUsername(employee.getUsername())) {
-            return "Username already exists";
-        }
-        if (employeeRepository.existsByEmailAddress(employee.getEmailAddress())) {
-            return "Email address already exists";
-        }
-        if (employeeRepository.existsByContactNumber(employee.getContactNumber())) {
-            return "Contact number already exists";
-        }
-        if (employeeRepository.existsByFirstName(employee.getFirstName())) {
-            return "Firstname already exists";
-        }
-        if (employeeRepository.existsByLastName(employee.getLastName())) {
-            return "Lastname number already exists";
-        }
-        
-
-        employeeRepository.save(employee);
-        return "Employee saved successfully";
-    }
 	@Override
-	public EmployeeDTO findById(Long userId) {
-		EmployeeEntity employee = employeeRepository.findById(userId)
-				.orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + userId));
-		return convertToDTO(employee);
+	public String saveEmployee(EmployeeEntity employee, Long roleId, MultipartFile profileImages) throws IOException {
+	    StringBuilder invalidFields = new StringBuilder();
+
+	    // Validate required fields
+	    if (employee.getUsername() == null || employee.getUsername().trim().isEmpty()) {
+	        invalidFields.append("Username, ");
+	    }
+	    if (employee.getEmailAddress() == null || employee.getEmailAddress().trim().isEmpty()) {
+	        invalidFields.append("Email address, ");
+	    }
+	    if (employee.getContactNumber() == null || employee.getContactNumber().trim().isEmpty()) {
+	        invalidFields.append("Contact number, ");
+	    }
+	    if (employee.getFirstName() == null || employee.getFirstName().trim().isEmpty()) {
+	        invalidFields.append("First name, ");
+	    }
+	    if (employee.getLastName() == null || employee.getLastName().trim().isEmpty()) {
+	        invalidFields.append("Last name, ");
+	    }
+
+	    if (invalidFields.length() > 0) {
+	        invalidFields.setLength(invalidFields.length() - 2); // Remove trailing comma and space
+	        throw new InvalidInputException("The following fields cannot be null or blank: " + invalidFields.toString());
+	    }
+
+	    // Handle profile image if provided
+	    if (profileImages != null && !profileImages.isEmpty()) {
+	        employee.setProfileImages(profileImages.getBytes());
+	    }
+
+	    // Validate and set role
+	    Optional<RoleEntity> role = roleRepository.findById(roleId);
+	    if (role.isPresent()) {
+	        employee.setRoles(role.get());
+	    } else {
+	        throw new InvalidInputException("Role not found");
+	    }
+
+	    // Check for duplicate entries
+	    if (employeeRepository.existsByUsername(employee.getUsername())) {
+	        return "Username already exists";
+	    }
+	    if (employeeRepository.existsByEmailAddress(employee.getEmailAddress())) {
+	        return "Email address already exists";
+	    }
+	    if (employeeRepository.existsByContactNumber(employee.getContactNumber())) {
+	        return "Contact number already exists";
+	    }
+	    if (employeeRepository.existsByFirstName(employee.getFirstName())) {
+	        return "Firstname already exists";
+	    }
+	    if (employeeRepository.existsByLastName(employee.getLastName())) {
+	        return "Lastname already exists";
+	    }
+
+	    // Save employee
+	    employeeRepository.save(employee);
+	    return "Employee saved successfully";
 	}
 
-	@Override
-	public void saveEmployee(EmployeeDTO employeeDTO) {
-		EmployeeEntity employee = convertToEntity(employeeDTO);
-		employeeRepository.save(employee);
-	}
-
-	@Override
-	public void updateProfile(EmployeeDTO employeeDTO) {
-		EmployeeEntity employee = employeeRepository.findById(employeeDTO.getUserId()).orElseThrow(
-				() -> new EmployeeNotFoundException("Employee not found with id: " + employeeDTO.getUserId()));
-
-		employee.setUsername(employeeDTO.getUsername());
-		employee.setFirstName(employeeDTO.getFirstName());
-		employee.setLastName(employeeDTO.getLastName());
-		employee.setEmailAddress(employeeDTO.getEmailAddress());
-		employee.setContactNumber(employeeDTO.getContactNumber());
-		employee.setProfileImagePath(employeeDTO.getProfileImagePath());
-		employee.setProfileImages(employeeDTO.getProfileImages());
-
-		Optional.ofNullable(employeeDTO.getBranchId()).flatMap(branchRepository::findById)
-				.ifPresent(employee::setBranch);
-
-		Optional.ofNullable(employeeDTO.getDepartmentId()).flatMap(departmentRepository::findById)
-				.ifPresent(employee::setDepartment);
-
-		Optional.ofNullable(employeeDTO.getSubDepartmentId()).flatMap(subDepartmentRepository::findById)
-				.ifPresent(employee::setSubDepartment);
-
-		employeeRepository.save(employee);
-	}
+	
+	
 
 	@Override
 	public void changePassword(Long userId, String password) {
@@ -173,29 +148,7 @@ public class EmployeeServiceImplemention implements EmployeeService {
 		return employee;
 	}
 
-	@Override
-	public List<EmployeeDTO> getAllEmployees() {
-		List<EmployeeEntity> employees = employeeRepository.findAll();
-		return employees.stream().map(this::convertToDTO).collect(Collectors.toList());
-	}
-
-	private EmployeeDTO convertToDTO(EmployeeEntity employee) {
-		EmployeeDTO dto = new EmployeeDTO();
-		dto.setUserId(employee.getUserId());
-		dto.setUsername(employee.getUsername());
-		dto.setPassword(employee.getPassword()); 
-		dto.setFirstName(employee.getFirstName());
-		dto.setLastName(employee.getLastName());
-		dto.setEmailAddress(employee.getEmailAddress());
-		dto.setContactNumber(employee.getContactNumber());
-		dto.setProfileImages(employee.getProfileImages());
-		dto.setBranchId(employee.getBranch() != null ? employee.getBranch().getBranchId() : 0);
-		dto.setDepartmentId(employee.getDepartment() != null ? employee.getDepartment().getDepartmentId() : 0);
-		dto.setSubDepartmentId(
-				employee.getSubDepartment() != null ? employee.getSubDepartment().getSubDepartmentId() : 0);
-		dto.setProfileImagePath(employee.getProfileImagePath()); 
-		return dto;
-	}
+	
 
 
 
@@ -209,6 +162,33 @@ public class EmployeeServiceImplemention implements EmployeeService {
 		}
 	}
 
-	
+	 public EmployeeEntity updateEmployee(Long userId, EmployeeEntity employeeUpdates) {
+	        EmployeeEntity employee = employeeRepository.findById(userId)
+	                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + userId));
+
+	        // Update fields
+	        employee.setUsername(employeeUpdates.getUsername());
+	        employee.setPassword(employeeUpdates.getPassword());
+	        employee.setFirstName(employeeUpdates.getFirstName());
+	        employee.setLastName(employeeUpdates.getLastName());
+	        employee.setEmailAddress(employeeUpdates.getEmailAddress());
+	        employee.setContactNumber(employeeUpdates.getContactNumber());
+	        employee.setProfileImagePath(employeeUpdates.getProfileImagePath());
+	        employee.setProfileImages(employeeUpdates.getProfileImages());
+	        employee.setRoles(employeeUpdates.getRoles());
+
+	        return employeeRepository.save(employee);
+	    }
+
+	    // Get Employee by ID
+	    public EmployeeEntity getEmployeeById(Long userId) {
+	        return employeeRepository.findById(userId)
+	                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + userId));
+	    }
+
+	    // Get All Employees
+	    public List<EmployeeEntity> getAllEmployees() {
+	        return employeeRepository.findAll();
+	    }
 	
 }

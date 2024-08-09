@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Ems.Entity.BranchEntity;
 import com.Ems.Entity.DepartmentEntity;
 import com.Ems.Entity.SubDepartmentEntity;
+import com.Ems.Exception.DuplicateDataException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Service.SubDepartmentService;
 import com.Ems.dto.SubDepartmentDto;
 
@@ -30,18 +32,27 @@ public class SubDepartmentController {
 
 	@Autowired
 	private SubDepartmentService subDepartmentService;
-	
-	    @PostMapping("/save/{departmentId}")
-	    public ResponseEntity<SubDepartmentEntity> createSubDepartment(@PathVariable int departmentId,
-	                                                                   @RequestParam String subDepartmentName,
-	                                                                   @RequestParam String subDepartmentDescription) {
-	        SubDepartmentDto subDepartmentDto = new SubDepartmentDto();
-	        subDepartmentDto.setSubDepartmentName(subDepartmentName);
-	        subDepartmentDto.setSubDepartmentDescription(subDepartmentDescription);
+	@PostMapping("/save/{departmentId}")
+    public ResponseEntity<?> createSubDepartment(
+            @PathVariable int departmentId,
+            @RequestParam String subDepartmentName,
+            @RequestParam String subDepartmentDescription) {
 
-	        SubDepartmentEntity createdSubDepartment = subDepartmentService.saveSubDepartment(subDepartmentDto, departmentId);
-	        return new ResponseEntity<>(createdSubDepartment, HttpStatus.CREATED);
-	    }
+        SubDepartmentDto subDepartmentDto = new SubDepartmentDto();
+        subDepartmentDto.setSubDepartmentName(subDepartmentName);
+        subDepartmentDto.setSubDepartmentDescription(subDepartmentDescription);
+
+        try {
+            SubDepartmentEntity createdSubDepartment = subDepartmentService.saveSubDepartment(subDepartmentDto, departmentId);
+            return new ResponseEntity<>(createdSubDepartment, HttpStatus.CREATED);
+        } catch (InvalidInputException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (DuplicateDataException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while creating the sub-department", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 	   
 

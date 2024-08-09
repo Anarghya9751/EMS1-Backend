@@ -36,18 +36,10 @@ public class SubDepartmentEntity {
     private DepartmentEntity parentDepartment;
     
     
-    @OneToMany(mappedBy = "subDepartment", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<EmployeeEntity> employees;
+   
     
 
-	public Set<EmployeeEntity> getEmployees() {
-		return employees;
-	}
-
-	public void setEmployees(Set<EmployeeEntity> employees) {
-		this.employees = employees;
-	}
+	
 
 	public Long getSubDepartmentId() {
 		return subDepartmentId;

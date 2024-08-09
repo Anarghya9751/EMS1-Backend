@@ -53,10 +53,7 @@ public class DepartmentEntity {
 	@JsonIgnore
     private Set<SubDepartmentEntity> subDepartments;
     
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private Set<EmployeeEntity> employees;
-    
+   
     
 
 	
@@ -74,14 +71,7 @@ public class DepartmentEntity {
 		this.subDepartments = subDepartments;
 	}
 
-	public Set<EmployeeEntity> getEmployees() {
-		return employees;
-	}
-
-	public void setEmployees(Set<EmployeeEntity> employees) {
-		this.employees = employees;
-	}
-
+	
 	public int getDepartmentId() {
 		return departmentId;
 	}

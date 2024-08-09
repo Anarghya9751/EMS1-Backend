@@ -62,19 +62,9 @@ public class BranchEntity {
 
     
    
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonBackReference
-    private Set<EmployeeEntity> employees;
+   
     
-    
-    public Set<EmployeeEntity> getEmployees() {
-		return employees;
-	}
-
-	public void setEmployees(Set<EmployeeEntity> employees) {
-		this.employees = employees;
-	}
-
+   
 	public BranchEntity() {
         super();
     }

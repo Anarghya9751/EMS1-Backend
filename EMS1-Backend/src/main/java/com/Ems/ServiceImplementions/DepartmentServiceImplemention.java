@@ -1,6 +1,7 @@
 package com.Ems.ServiceImplementions;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import com.Ems.Entity.SubDepartmentEntity;
 import com.Ems.Exception.BranchNotFoundException;
 import com.Ems.Exception.DepartmentNotFoundException;
 import com.Ems.Exception.DuplicateDataException;
+import com.Ems.Exception.InvalidInputException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Exception.OrganizationNotFoundException;
 import com.Ems.Repository.BranchRepository;
 import com.Ems.Repository.DepartmentRepository;
@@ -41,12 +44,28 @@ public class DepartmentServiceImplemention implements DepartmentService {
 	        BranchEntity branch = branchRepository.findById(branchId)
 	                .orElseThrow(() -> new BranchNotFoundException(branchId));
 	        
+	        StringBuilder invalidFields = new StringBuilder();
+
+	        if (departmentEntity.getDepartmentname() == null || departmentEntity.getDepartmentname().trim().isEmpty()) {
+	            invalidFields.append("Department name, ");
+	        }
+	        if (departmentEntity.getDepartmentDescription() == null || departmentEntity.getDepartmentDescription().trim().isEmpty()) {
+	            invalidFields.append("Department description, ");
+	        }
+	        
+	        if (invalidFields.length() > 0) {
+	            invalidFields.setLength(invalidFields.length() - 2);
+	            throw new InvalidInputException("The following fields cannot be null or blank: " + invalidFields.toString());
+	        }
+
 	        departmentEntity.setOrganization(organization);
 	        departmentEntity.setBranch(branch);
-	        
-	        
+
 	        return departmentRepository.save(departmentEntity);
 	    }
+	    
+	   
+
 	    
 	    
 	  

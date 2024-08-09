@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Ems.Entity.DepartmentEntity;
 import com.Ems.Exception.DepartmentNotFoundException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Service.DepartmentService;
 import com.Ems.dto.DepartmentDto;
 
@@ -32,17 +33,24 @@ public class DepartmentController {
 	    private DepartmentService departmentService;
 
 	    @PostMapping("/{organizationId}/{branchId}")
-	    public DepartmentEntity createDepartment(
+	    public ResponseEntity<String> createDepartment(
 	            @PathVariable Long organizationId,
 	            @PathVariable Integer branchId,
 	            @RequestParam String departmentName,
 	            @RequestParam String departmentDescription) {
-	        
+
 	        DepartmentEntity departmentEntity = new DepartmentEntity();
 	        departmentEntity.setDepartmentname(departmentName);
 	        departmentEntity.setDepartmentDescription(departmentDescription);
-	        
-	        return departmentService.saveDepartment(departmentEntity, organizationId, branchId);
+
+	        try {
+	            departmentService.saveDepartment(departmentEntity, organizationId, branchId);
+	            return new ResponseEntity<>("Department created successfully", HttpStatus.CREATED);
+	        } catch (InvalidInputException e) {
+	            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	        } catch (Exception e) {
+	            return new ResponseEntity<>("An error occurred while creating the department", HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
 	    }
 
 	    @DeleteMapping("/{departmentId}")

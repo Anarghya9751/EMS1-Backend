@@ -11,21 +11,20 @@ import com.Ems.dto.EmployeeDTO;
 
 public interface EmployeeService {
 
-    public String saveEmployee(EmployeeEntity employee, Integer branchId, Integer departmentId, Long subDepartmentId, Long roleId, MultipartFile profileImages) throws IOException ;
+	public String saveEmployee(EmployeeEntity employee, Long roleId, MultipartFile profileImages) throws IOException;
 
 
-    EmployeeDTO findById(Long userId);
+    public List<EmployeeEntity> getAllEmployees() ;
 
-    void saveEmployee(EmployeeDTO employeeDTO);
 
-    void updateProfile(EmployeeDTO employeeDTO);
 
     void changePassword(Long userId, String password);
 
     void updateProfileImage(Long userId, MultipartFile profileImages) throws Exception;
     
-    List<EmployeeDTO> getAllEmployees();
+	 public EmployeeEntity updateEmployee(Long userId, EmployeeEntity employeeUpdates) ;
 
+	    public EmployeeEntity getEmployeeById(Long userId) ;
 
     public String deleteEmployee(Long employeeId) ;
 

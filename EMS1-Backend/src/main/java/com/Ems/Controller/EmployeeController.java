@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.Ems.Entity.EmployeeEntity;
 import com.Ems.Exception.EmployeeNotFoundException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Service.EmployeeService;
 import com.Ems.dto.EmployeeDTO;
 
@@ -34,101 +35,116 @@ public class EmployeeController {
 	@Autowired
     private EmployeeService employeeService;
 
-	 @PostMapping("/save/{branchId}/{departmentId}/{subDepartmentId}/{roleId}")
-	    public ResponseEntity<String> saveEmployee(
-	            @RequestParam("username") String username,
-	            @RequestParam("password") String password,
-	            @RequestParam("firstName") String firstName,
-	            @RequestParam("lastName") String lastName,
-	            @RequestParam("emailAddress") String emailAddress,
-	            @RequestParam("contactNumber") String contactNumber,
-	            @RequestParam("profileImages") MultipartFile profileImages,
-	            @PathVariable("branchId") Integer branchId,
-	            @PathVariable("departmentId") Integer departmentId,
-	            @PathVariable("subDepartmentId") Long subDepartmentId,
-	            @PathVariable("roleId") Long roleId)
-	 {
+//	 @PostMapping("/save/{branchId}/{departmentId}/{subDepartmentId}/{roleId}")
+//	    public ResponseEntity<String> saveEmployee(
+//	            @RequestParam("username") String username,
+//	            @RequestParam("password") String password,
+//	            @RequestParam("firstName") String firstName,
+//	            @RequestParam("lastName") String lastName,
+//	            @RequestParam("emailAddress") String emailAddress,
+//	            @RequestParam("contactNumber") String contactNumber,
+//	            @RequestParam("profileImages") MultipartFile profileImages,
+//	            @PathVariable("branchId") Integer branchId,
+//	            @PathVariable("departmentId") Integer departmentId,
+//	            @PathVariable("subDepartmentId") Long subDepartmentId,
+//	            @PathVariable("roleId") Long roleId)
+//	 {
+//
+//	        EmployeeEntity employee = new EmployeeEntity();
+//	        employee.setUsername(username);
+//	        employee.setPassword(password);
+//	        employee.setFirstName(firstName);
+//	        employee.setLastName(lastName);
+//	        employee.setEmailAddress(emailAddress);
+//	        employee.setContactNumber(contactNumber);
+//
+//	        try {
+//	            String filePath = saveFileToDisk(profileImages);
+//	            employee.setProfileImagePath(filePath);
+//
+//	            String response = employeeService.saveEmployee(employee, branchId, departmentId, subDepartmentId, roleId, profileImages);
+//	            return ResponseEntity.ok(response);
+//	        } catch (IOException e) {
+//	            return ResponseEntity.status(500).body("Failed to save employee: " + e.getMessage());
+//	        }
+//	    }
+//
+//	    private String saveFileToDisk(MultipartFile file) throws IOException {
+//	        String directory = "C:\\Users\\KC\\Documents\\postman";
+//	        File dir = new File(directory);
+//	        if (!dir.exists()) {
+//	            dir.mkdirs();
+//	        }
+//
+//	        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+//	        File serverFile = new File(dir.getAbsolutePath() + File.separator + fileName);
+//
+//	        try (FileOutputStream fos = new FileOutputStream(serverFile)) {
+//	            fos.write(file.getBytes());
+//	        }
+//
+//	        return serverFile.getAbsolutePath();
+//	    }
+	
+	@PostMapping("/save/{roleId}")
+	public ResponseEntity<String> saveEmployee(
+	        @RequestParam("username") String username,
+	        @RequestParam("password") String password,
+	        @RequestParam("firstName") String firstName,
+	        @RequestParam("lastName") String lastName,
+	        @RequestParam("emailAddress") String emailAddress,
+	        @RequestParam("contactNumber") String contactNumber,
+	        @RequestParam(value = "profileImages", required = false) MultipartFile profileImages,
+	        @PathVariable("roleId") Long roleId) {
 
-	        EmployeeEntity employee = new EmployeeEntity();
-	        employee.setUsername(username);
-	        employee.setPassword(password);
-	        employee.setFirstName(firstName);
-	        employee.setLastName(lastName);
-	        employee.setEmailAddress(emailAddress);
-	        employee.setContactNumber(contactNumber);
+	    EmployeeEntity employee = new EmployeeEntity();
+	    employee.setUsername(username);
+	    employee.setPassword(password);
+	    employee.setFirstName(firstName);
+	    employee.setLastName(lastName);
+	    employee.setEmailAddress(emailAddress);
+	    employee.setContactNumber(contactNumber);
 
-	        try {
+	    try {
+	        if (profileImages != null && !profileImages.isEmpty()) {
+	            // Save the file and get the file path
 	            String filePath = saveFileToDisk(profileImages);
 	            employee.setProfileImagePath(filePath);
-
-	            String response = employeeService.saveEmployee(employee, branchId, departmentId, subDepartmentId, roleId, profileImages);
-	            return ResponseEntity.ok(response);
-	        } catch (IOException e) {
-	            return ResponseEntity.status(500).body("Failed to save employee: " + e.getMessage());
 	        }
+
+	        // Call the service method to save the employee
+	        String response = employeeService.saveEmployee(employee, roleId, profileImages);
+	        return ResponseEntity.ok(response);
+
+	    } catch (InvalidInputException e) {
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    } catch (IOException e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                             .body("Failed to save employee: " + e.getMessage());
+	    }
+	}
+
+	private String saveFileToDisk(MultipartFile file) throws IOException {
+	    String directory = "C:\\Users\\KC\\Documents\\postman";
+	    File dir = new File(directory);
+	    if (!dir.exists()) {
+	        dir.mkdirs();
 	    }
 
-	    private String saveFileToDisk(MultipartFile file) throws IOException {
-	        String directory = "C:\\Users\\KC\\Documents\\postman";
-	        File dir = new File(directory);
-	        if (!dir.exists()) {
-	            dir.mkdirs();
-	        }
+	    String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+	    File serverFile = new File(dir.getAbsolutePath() + File.separator + fileName);
 
-	        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-	        File serverFile = new File(dir.getAbsolutePath() + File.separator + fileName);
-
-	        try (FileOutputStream fos = new FileOutputStream(serverFile)) {
-	            fos.write(file.getBytes());
-	        }
-
-	        return serverFile.getAbsolutePath();
+	    try (FileOutputStream fos = new FileOutputStream(serverFile)) {
+	        fos.write(file.getBytes());
 	    }
+
+	    return serverFile.getAbsolutePath();
+	}
+
 	    
-	    @GetMapping("/profile/{userId}")
-	    public ResponseEntity<EmployeeDTO> viewProfile(@PathVariable Long userId)
-	    {
-	        EmployeeDTO employeeDTO = employeeService.findById(userId);
-	        return employeeDTO != null ? ResponseEntity.ok(employeeDTO) : ResponseEntity.notFound().build();
-	    }
+	   
 
-	    @PutMapping("/profile/update/{userId}")
-	    public ResponseEntity<String> updateProfile(
-	            @PathVariable Long userId,
-	            @RequestParam String username,
-	            @RequestParam String firstName,
-	            @RequestParam String lastName,
-	            @RequestParam String emailAddress,
-	            @RequestParam String contactNumber,
-	            @RequestParam(required = false) Integer branchId,
-	            @RequestParam(required = false) Integer departmentId,
-	            @RequestParam(required = false) Long subDepartmentId,
-	            @RequestParam(required = false) MultipartFile profileImage) {
-	        try {
-	            EmployeeDTO employeeDTO = new EmployeeDTO();
-	            employeeDTO.setUserId(userId);
-	            employeeDTO.setUsername(username);
-	            employeeDTO.setFirstName(firstName);
-	            employeeDTO.setLastName(lastName);
-	            employeeDTO.setEmailAddress(emailAddress);
-	            employeeDTO.setContactNumber(contactNumber);
-	            employeeDTO.setBranchId(branchId);
-	            employeeDTO.setDepartmentId(departmentId);
-	            employeeDTO.setSubDepartmentId(subDepartmentId);
-
-	            if (profileImage != null && !profileImage.isEmpty()) {
-	                employeeDTO.setProfileImages(profileImage.getBytes());
-	                employeeDTO.setProfileImagePath(profileImage.getOriginalFilename());
-	            }
-
-	            employeeService.updateProfile(employeeDTO);
-	            return ResponseEntity.ok("Profile updated successfully");
-	        } catch (EmployeeNotFoundException e) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-	        } catch (Exception e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the profile");
-	        }
-	    }
+	    
 
 
 	   
@@ -159,15 +175,32 @@ public class EmployeeController {
 
 
 	    
-	    @GetMapping("/ListofallEmployees")
-	    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-	        List<EmployeeDTO> employees = employeeService.getAllEmployees();
-	        return ResponseEntity.ok(employees);
-	    }
+	   
 	    
 	    @DeleteMapping("/Delete/{employeeId}")
 	    public String deleteEmployee(@PathVariable("employeeId") Long employeeId) {
 	        return employeeService.deleteEmployee(employeeId);
+	    }
+	    
+	    
+	    @PutMapping("/update/{userId}")
+	    public ResponseEntity<EmployeeEntity> updateEmployee(
+	            @PathVariable Long userId,
+	            @RequestBody EmployeeEntity employeeUpdates) {
+	        EmployeeEntity updatedEmployee = employeeService.updateEmployee(userId, employeeUpdates);
+	        return ResponseEntity.ok(updatedEmployee);
+	    }
+
+	    @GetMapping("/getbyid/{userId}")
+	    public ResponseEntity<EmployeeEntity> getEmployeeById(@PathVariable Long userId) {
+	        EmployeeEntity employee = employeeService.getEmployeeById(userId);
+	        return ResponseEntity.ok(employee);
+	    }
+
+	    @GetMapping("/ListofallEmployees")
+	    public ResponseEntity<List<EmployeeEntity>> getAllEmployees() {
+	        List<EmployeeEntity> employees = employeeService.getAllEmployees();
+	        return ResponseEntity.ok(employees);
 	    }
 	   
 }

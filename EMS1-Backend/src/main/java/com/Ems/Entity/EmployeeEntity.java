@@ -21,7 +21,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "employees")
+@Table(name = "employeesDeatils")
 public class EmployeeEntity {
 
     @Id
@@ -64,20 +64,20 @@ public class EmployeeEntity {
 
     
     
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "branch_id", nullable = false)
-    private BranchEntity branch;
-
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "department_id", nullable = false)
-    private DepartmentEntity department;
-    
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "sub_department_id", nullable = false)
-    private SubDepartmentEntity subDepartment;
+//    @ManyToOne
+//    @JsonBackReference
+//    @JoinColumn(name = "branch_id", nullable = false)
+//    private BranchEntity branch;
+//
+//    @ManyToOne
+//    @JsonBackReference
+//    @JoinColumn(name = "department_id", nullable = false)
+//    private DepartmentEntity department;
+//    
+//    @ManyToOne
+//    @JsonBackReference
+//    @JoinColumn(name = "sub_department_id", nullable = false)
+//    private SubDepartmentEntity subDepartment;
 
     @ManyToOne
     @JsonBackReference
@@ -97,21 +97,7 @@ public class EmployeeEntity {
 		this.roles = roles;
 	}
 
-	public BranchEntity getBranch() {
-		return branch;
-	}
-
-	public void setBranch(BranchEntity branch) {
-		this.branch = branch;
-	}
-
-	public DepartmentEntity getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(DepartmentEntity department) {
-		this.department = department;
-	}
+	
 
 	public Long getUserId() {
         return userId;
@@ -186,14 +172,7 @@ public class EmployeeEntity {
 		this.profileImagePath = profileImagePath;
 	}
 
-	public SubDepartmentEntity getSubDepartment() {
-		return subDepartment;
-	}
-
-	public void setSubDepartment(SubDepartmentEntity subDepartment) {
-		this.subDepartment = subDepartment;
-	}
-
+	
 	
 
     

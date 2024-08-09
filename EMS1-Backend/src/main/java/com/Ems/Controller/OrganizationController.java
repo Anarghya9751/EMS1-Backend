@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.Ems.Entity.OrganizationEntity;
 import com.Ems.Exception.DuplicateDataException;
 import com.Ems.Exception.NotSuperAdminException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Service.OrganizationService;
 import com.Ems.dto.OrganizationForm;
 
@@ -35,44 +36,48 @@ public class OrganizationController {
 	private OrganizationService service;
 	
 	
-	@PostMapping("/create")
-	public ResponseEntity<String> addOrganization(
-	        @RequestParam String organizationName,
-	        @RequestParam String organizationType,
-	        @RequestParam String location,
-	        @RequestParam String contactPersonName,
-	        @RequestParam String contactPersonEmail,
-	        @RequestParam String contactPersonPhoneNumber,
-	        @RequestParam String websiteURL,
-	        @RequestParam String registrationNumber,
-	        @RequestParam String description,
-	        @RequestParam String logoURL,
-	        @RequestParam String role) {
+	 @PostMapping("/create")
+	    public ResponseEntity<String> addOrganization(
+	            @RequestParam String organizationName,
+	            @RequestParam String organizationType,
+	            @RequestParam String location,
+	            @RequestParam String contactPersonName,
+	            @RequestParam String contactPersonEmail,
+	            @RequestParam String contactPersonPhoneNumber,
+	            @RequestParam String websiteURL,
+	            @RequestParam String registrationNumber,
+	            @RequestParam String description,
+	            @RequestParam String logoURL,
+	            @RequestParam String role) {
 
-	    try {
-	        OrganizationForm organizationForm = new OrganizationForm();
-	        organizationForm.setOrganizationName(organizationName);
-	        organizationForm.setOrganizationType(organizationType);
-	        organizationForm.setLocation(location);
-	        organizationForm.setContactPersonName(contactPersonName);
-	        organizationForm.setContactPersonEmail(contactPersonEmail);
-	        organizationForm.setContactPersonPhoneNumber(contactPersonPhoneNumber);
-	        organizationForm.setWebsiteURL(websiteURL);
-	        organizationForm.setRegistrationNumber(registrationNumber);
-	        organizationForm.setDescription(description);
-	        organizationForm.setLogoURL(logoURL);
-	        organizationForm.setRole(role);
+	        try {
+	            OrganizationForm organizationForm = new OrganizationForm();
+	            organizationForm.setOrganizationName(organizationName);
+	            organizationForm.setOrganizationType(organizationType);
+	            organizationForm.setLocation(location);
+	            organizationForm.setContactPersonName(contactPersonName);
+	            organizationForm.setContactPersonEmail(contactPersonEmail);
+	            organizationForm.setContactPersonPhoneNumber(contactPersonPhoneNumber);
+	            organizationForm.setWebsiteURL(websiteURL);
+	            organizationForm.setRegistrationNumber(registrationNumber);
+	            organizationForm.setDescription(description);
+	            organizationForm.setLogoURL(logoURL);
+	            organizationForm.setRole(role);
 
-	        OrganizationEntity addedEntity = service.addEntity(organizationForm);
-
-	        return new ResponseEntity<>("Organization added successfully", HttpStatus.CREATED);
-
-	    } catch (DuplicateDataException e) {
-	        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-	    } catch (Exception e) {
-	        return new ResponseEntity<>("An error occurred while adding the organization", HttpStatus.INTERNAL_SERVER_ERROR);
+	            OrganizationEntity addedEntity = service.addEntity(organizationForm);
+	            return new ResponseEntity<>("Organization added successfully", HttpStatus.CREATED);
+	        } catch (InvalidInputException e) {
+	            // Handle null or blank input validation error
+	            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	        } catch (DuplicateDataException e) {
+	            // Handle duplicate data error
+	            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+	        } catch (Exception e) {
+	            // Handle other exceptions
+	            return new ResponseEntity<>("An error occurred while adding the organization", HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
 	    }
-	}
+
 
 	
 	@GetMapping("/get/{organizationId}")

@@ -15,6 +15,7 @@ import com.Ems.Exception.BranchAlreadyExistsException;
 import com.Ems.Exception.BranchDeptNotFoundException;
 import com.Ems.Exception.BranchNotFoundException;
 import com.Ems.Exception.DuplicateDataException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Exception.OrganizationNotFoundException;
 import com.Ems.Repository.BranchRepository;
 import com.Ems.Repository.OrganizationRepository;
@@ -37,12 +38,36 @@ public class BranchServiceImplemention implements BranchService {
 	    
 	  
 	    
+//	    @Override
+//	    public String createBranch(Long organizationId, BranchEntity branchEntity) {
+//	        if (branchEntity.getBranchId() != null && branchRepository.existsById(branchEntity.getBranchId())) {
+//	            throw new DuplicateDataException("Branch with ID " + branchEntity.getBranchId() + " already exists.");
+//	        }
+//
+//	        Optional<BranchEntity> existingBranch = branchRepository.findByBranchNameAndBranchDescriptionAndBranchAddressAndBranchContactNumber(
+//	                branchEntity.getBranchName(),
+//	                branchEntity.getBranchDescription(),
+//	                branchEntity.getBranchAddress(),
+//	                branchEntity.getBranchContactNumber()
+//	        );
+//
+//	        if (existingBranch.isPresent()) {
+//	            throw new DuplicateDataException("Branch with the same Branchname, description, address, and contact number already exists.please Check Onces");
+//	        }
+//
+//	        branchRepository.save(branchEntity);
+//	        return "Branch created successfully with ID: " + branchEntity.getBranchId() + " for Organization ID: " + organizationId;
+//	    }
+//	    
+	    
 	    @Override
 	    public String createBranch(Long organizationId, BranchEntity branchEntity) {
+	        // Check if the Branch ID already exists
 	        if (branchEntity.getBranchId() != null && branchRepository.existsById(branchEntity.getBranchId())) {
 	            throw new DuplicateDataException("Branch with ID " + branchEntity.getBranchId() + " already exists.");
 	        }
 
+	        // Check for duplicate branch based on other fields
 	        Optional<BranchEntity> existingBranch = branchRepository.findByBranchNameAndBranchDescriptionAndBranchAddressAndBranchContactNumber(
 	                branchEntity.getBranchName(),
 	                branchEntity.getBranchDescription(),
@@ -51,12 +76,38 @@ public class BranchServiceImplemention implements BranchService {
 	        );
 
 	        if (existingBranch.isPresent()) {
-	            throw new DuplicateDataException("Branch with the same Branchname, description, address, and contact number already exists.please Check Onces");
+	            throw new DuplicateDataException("Branch with the same name, description, address, and contact number already exists. Please check again.");
 	        }
 
+	        // Validate input fields for null or blank values
+	        StringBuilder nullFields = new StringBuilder();
+
+	        if (branchEntity.getBranchName() == null || branchEntity.getBranchName().trim().isEmpty()) {
+	            nullFields.append("Branch Name, ");
+	        }
+	        if (branchEntity.getBranchDescription() == null || branchEntity.getBranchDescription().trim().isEmpty()) {
+	            nullFields.append("Branch Description, ");
+	        }
+	        if (branchEntity.getBranchAddress() == null || branchEntity.getBranchAddress().trim().isEmpty()) {
+	            nullFields.append("Branch Address, ");
+	        }
+	        if (branchEntity.getBranchContactNumber() == null || branchEntity.getBranchContactNumber().trim().isEmpty()) {
+	            nullFields.append("Branch Contact Number, ");
+	        }
+
+	        if (nullFields.length() > 0) {
+	            // Remove the last comma and space
+	            nullFields.setLength(nullFields.length() - 2);
+	            throw new InvalidInputException("The following fields cannot be null or blank: " + nullFields.toString());
+	        }
+
+	        // Save the branch entity
 	        branchRepository.save(branchEntity);
 	        return "Branch created successfully with ID: " + branchEntity.getBranchId() + " for Organization ID: " + organizationId;
 	    }
+
+	    
+	    
 	
 	    @Override
 	    public BranchEntity getBranchWithDepartments(Integer branchId) 

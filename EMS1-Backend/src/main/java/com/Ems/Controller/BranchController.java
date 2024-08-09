@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Ems.Entity.BranchEntity;
+import com.Ems.Exception.DuplicateDataException;
+import com.Ems.Exception.InvalidInputException;
 import com.Ems.Service.BranchService;
 import com.Ems.dto.BranchForm;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 
 @RestController
 @RequestMapping("/api/branches")
@@ -30,17 +33,32 @@ public class BranchController {
 
    
     @PostMapping("/save/{organizationId}")
-    public String createBranch(@PathVariable Long organizationId, @Valid @RequestParam String branchName, 
-                               @RequestParam String branchDescription, @RequestParam String branchAddress, 
-                               @RequestParam String branchContactNumber) {
+    public ResponseEntity<String> createBranch(
+            @PathVariable Long organizationId,
+            @RequestParam String branchName,
+            @RequestParam String branchDescription,
+            @RequestParam String branchAddress,
+            @RequestParam
+            @Pattern(regexp = "^[6-9]\\d{9}$", message = "Contact number must start with a digit between 6 and 9 and be exactly 10 digits")
+            String branchContactNumber) {
+
         BranchEntity branchEntity = new BranchEntity();
         branchEntity.setBranchName(branchName);
         branchEntity.setBranchDescription(branchDescription);
         branchEntity.setBranchAddress(branchAddress);
         branchEntity.setBranchContactNumber(branchContactNumber);
-        return branchService.createBranch(organizationId, branchEntity);
-    }
 
+        try {
+            String result = branchService.createBranch(organizationId, branchEntity);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (InvalidInputException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (DuplicateDataException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while creating the branch", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
 
     @DeleteMapping("/{branchId}")
